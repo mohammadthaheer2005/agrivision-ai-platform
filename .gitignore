@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Reports and logs
+reports/
+backend/reports/
+*.log
+backend_log.txt
+*.pdf
+diag_*.jpg
+diag_*.png
+
+# Streamlit
+.streamlit/config.toml
+.streamlit/secrets.toml
+
+# OS
+.DS_Store
+Thumbs.db

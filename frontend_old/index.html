@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agri-Intelligence Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4ade80;
+            --bg: #050505;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: white;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% 50%, #1a2e1a 0%, #050505 100%);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            height: 100vh;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .panel {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        h2 { font-weight: 300; letter-spacing: 1px; color: var(--primary); }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-value { font-size: 24px; font-weight: 600; color: #fff; }
+        .stat-label { font-size: 12px; color: #888; text-transform: uppercase; }
+
+        .image-container {
+            flex: 1;
+            position: relative;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        #generated-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+        }
+
+        .chat-area {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-right: 5px;
+        }
+
+        .message {
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 85%;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .bot { background: rgba(74, 222, 128, 0.1); border: 1px solid rgba(74, 222, 128, 0.2); align-self: flex-start; }
+        .user { background: rgba(255, 255, 255, 0.05); align-self: flex-end; }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            background: rgba(0,0,0,0.2);
+            padding: 5px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        input {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 10px;
+            flex: 1;
+            font-family: inherit;
+        }
+
+        input:focus { outline: none; }
+
+        button {
+            background: var(--primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #000;
+            transition: 0.3s;
+        }
+
+        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(74, 222, 128, 0.3); }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .panel { animation: fadeIn 0.8s ease-out; }
+
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Live Data Panel -->
+        <div class="panel">
+            <h2>LIVE DATA</h2>
+            <div class="stat-card">
+                <div class="stat-label">Temperature</div>
+                <div id="temp" class="stat-value">24.5°C</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Humidity</div>
+                <div id="humidity" class="stat-value">62%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Soil Moisture</div>
+                <div id="moisture" class="stat-value">Optimal</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Yield Forecast</div>
+                <div id="forecast" class="stat-value">...</div>
+            </div>
+            <button onclick="fetchLiveData()">REFRESH DATA</button>
+        </div>
+
+        <!-- Visual Core -->
+        <div class="panel">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>AGRI-VISUALS</h2>
+                <div style="font-size: 12px; color: #888;">AI POWERED</div>
+            </div>
+            <div class="image-container">
+                <div id="loader" class="loading">Generating...</div>
+                <img id="generated-img" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=1200" alt="Agri View">
+            </div>
+            <div class="input-group">
+                <input id="img-prompt" type="text" placeholder="Describe the field visual...">
+                <button onclick="generateImage()">GENERATE</button>
+            </div>
+        </div>
+
+        <!-- AI Assistant -->
+        <div class="panel">
+            <h2>AGRI-BOT</h2>
+            <div id="chat-box" class="chat-area">
+                <div class="message bot">Hello! I'm your Agricultural AI. How can I assist your farm today?</div>
+            </div>
+            <div class="input-group">
+                <input id="chat-input" type="text" placeholder="Ask Guru...">
+                <button onclick="sendMessage()">ASK</button>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button style="flex: 1; background: #333; color: white;" onclick="toggleVoice()">VOICE ON</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = "http://localhost:8002/api";
+        let voiceEnabled = false;
+
+        async function fetchLiveData() {
+            try {
+                const res = await fetch(`${API_BASE}/live-data`);
+                const data = await res.json();
+                document.getElementById('temp').innerText = `${data.temperature}°C`;
+                document.getElementById('humidity').innerText = `${data.humidity}%`;
+                document.getElementById('moisture').innerText = data.soil_moisture;
+                document.getElementById('forecast').innerText = "Calculating...";
+                
+                // Fetch prediction
+                const predRes = await fetch(`${API_BASE}/predict`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({rainfall: 120, temperature: data.temperature, fertilizer: 50, pesticide: 10})
+                });
+                const predData = await predRes.json();
+                document.getElementById('forecast').innerText = `${Math.round(predData.yield)} Hg/Ha`;
+            } catch (e) { console.error(e); }
+        }
+
+        async function generateImage() {
+            const prompt = document.getElementById('img-prompt').value || "Realistic agriculture field view, sunset, 8k";
+            const img = document.getElementById('generated-img');
+            const loader = document.getElementById('loader');
+            
+            loader.style.display = 'block';
+            img.style.opacity = '0.3';
+
+            try {
+                const res = await fetch(`${API_BASE}/generate-image`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({prompt})
+                });
+                const data = await res.json();
+                img.src = data.url;
+                img.onload = () => {
+                    loader.style.display = 'none';
+                    img.style.opacity = '1';
+                };
+            } catch (e) { 
+                loader.style.display = 'none';
+                img.style.opacity = '1';
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const box = document.getElementById('chat-box');
+            if(!input.value) return;
+
+            const userText = input.value;
+            box.innerHTML += `<div class="message user">${userText}</div>`;
+            input.value = '';
+            box.scrollTop = box.scrollHeight;
+
+            try {
+                const res = await fetch(`${API_BASE}/chat`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({message: userText})
+                });
+                const data = await res.json();
+                box.innerHTML += `<div class="message bot">${data.answer}</div>`;
+                box.scrollTop = box.scrollHeight;
+
+                if(voiceEnabled) {
+                    speak(data.answer);
+                }
+            } catch (e) {
+                box.innerHTML += `<div class="message bot">Error connecting to Agri-Bot.</div>`;
+            }
+        }
+
+        function toggleVoice() {
+            voiceEnabled = !voiceEnabled;
+            event.target.innerText = voiceEnabled ? "VOICE OFF" : "VOICE ON";
+            event.target.style.background = voiceEnabled ? "#4ade80" : "#333";
+            event.target.style.color = voiceEnabled ? "#000" : "#fff";
+        }
+
+        function speak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            speechSynthesis.speak(utterance);
+        }
+
+        // Initial fetch
+        fetchLiveData();
+    </script>
+</body>
+</html>

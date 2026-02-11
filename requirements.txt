@@ -1,0 +1,10 @@
+streamlit==1.42.0
+requests==2.32.3
+pandas==2.2.3
+Pillow==11.1.0
+python-dotenv==1.0.1
+gTTS==2.5.4
+fpdf2==2.8.5
+fastapi==0.115.8
+uvicorn==0.34.0
+pydantic==2.10.6
