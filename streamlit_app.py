@@ -35,39 +35,6 @@ st.set_page_config(
     }
 )
 
-# --- SEO META TAGS & STRUCTURED DATA ---
-st.markdown("""
-    <head>
-        <meta name="description" content="AgriVision AI: The world's most advanced AI-powered platform for crop disease detection, yield optimization, and precision agriculture intelligence.">
-        <meta name="keywords" content="Agriculture AI, Crop Disease Detection, Smart Farming, Precision Agriculture, Plant Pathology AI, Farmer Assistant, AgriVision">
-        <meta name="author" content="Mohammad Thaheer">
-        <link rel="canonical" href="https://agrivision-ai-platform.streamlit.app/">
-        
-        <!-- Open Graph / Facebook -->
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="https://agrivision-ai-platform.streamlit.app/">
-        <meta property="og:title" content="AgriVision AI - Global Agricultural Intelligence">
-        <meta property="og:description" content="AI-driven crop diagnosis and yield optimization for the modern farmer.">
-        
-        <!-- Structured Data (JSON-LD) for Search Engines -->
-        <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          "name": "AgriVision AI",
-          "operatingSystem": "Web",
-          "applicationCategory": "Agriculture",
-          "description": "Advanced AI for crop disease detection and agricultural intelligence.",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          }
-        }
-        </script>
-    </head>
-""", unsafe_allow_html=True)
-
 # --- CUSTOM CSS (ELITE CYBER-INDUSTRIAL V28.0) ---
 st.markdown("""
 <style>
@@ -436,7 +403,8 @@ with st.sidebar:
                         "vitality": random.randint(70, 95), 
                         "db": disease_info, 
                         "label": res.get("label", ans.split('.')[0]),
-                        "confidence": res.get("confidence", "85%")
+                        "confidence": res.get("confidence", "85%"),
+                        "image_base64": img_b64
                     }
                     # V36.0: NATURAL VOICE TRIGGER (BIO-SCAN)
                     st.session_state.last_speech_text = res.get("speech_summary", ans)
@@ -486,6 +454,7 @@ with st.sidebar:
                 "market_snapshot": market,
                 "condition_name": st.session_state.audit.get('label') if st.session_state.audit else "Unknown",
                 "disease_info": st.session_state.audit.get('db') if st.session_state.audit else None,
+                "image_base64": st.session_state.audit.get('image_base64') if st.session_state.audit else None,
                 "country": country, "state": state, "place": place, "soil_type": soil, "season": season
             }
             res = call_backend("generate-report", payload=payload)
