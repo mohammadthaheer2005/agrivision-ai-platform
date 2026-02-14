@@ -415,7 +415,9 @@ with st.sidebar:
             with st.spinner("Executing Precision Scan..."):
                 # Convert resized image to base64
                 buffered = BytesIO()
-                img.save(buffered, format="JPEG", quality=85)
+                # V28.9: MODE SAFETY (Ensures JPEG Compatibility)
+                img_to_save = img.convert("RGB")
+                img_to_save.save(buffered, format="JPEG", quality=85)
                 img_b64 = base64.b64encode(buffered.getvalue()).decode()
                 
                 res = call_backend("vision-diagnosis", payload={"image_base64": img_b64, "language": lang})
