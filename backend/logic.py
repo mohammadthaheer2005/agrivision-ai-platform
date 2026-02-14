@@ -208,6 +208,86 @@ from disease_database import get_disease_info, DISEASE_TREATMENTS
 
 # ... (rest of logic remains same, just updating vision_diagnosis_logic)
 
+def generate_report_logic(payload):
+    """
+    V28.8 Standalone Report Engine (Cloud Compatible)
+    Generates an Industrial Audit PDF and returns it as a base64 string.
+    """
+    try:
+        from fpdf import FPDF
+        import base64
+        import datetime
+        from io import BytesIO
+
+        data = payload.get("data", {})
+        recommendation = payload.get("recommendation", "Industrial protocols deployed.")
+        language = payload.get("language", "English")
+        history = payload.get("history", [])
+        condition_name = payload.get("condition_name", "Unknown")
+        market = payload.get("market_snapshot", {})
+
+        pdf = FPDF()
+        pdf.add_page()
+        
+        # Header (Industrial Style)
+        pdf.set_fill_color(10, 20, 40)
+        pdf.rect(0, 0, 210, 40, 'F')
+        pdf.set_text_color(255, 255, 255)
+        pdf.set_font("Helvetica", 'B', 18)
+        pdf.cell(0, 15, "AGRI-COMMAND ELITE AUDIT V28.8", ln=True, align='C')
+        pdf.set_font("Helvetica", size=10)
+        pdf.cell(0, 10, f"GENERATED: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | CLOUD UPLINK ACTIVE", ln=True, align='C')
+        
+        pdf.ln(15)
+        pdf.set_text_color(0, 0, 0)
+        
+        # Section I: Vision Audit
+        pdf.set_font("Helvetica", 'B', 14)
+        pdf.set_fill_color(240, 240, 240)
+        pdf.cell(0, 10, " I. BIOLOGICAL VISION DIAGNOSIS", ln=True, fill=True)
+        pdf.ln(2)
+        pdf.set_font("Helvetica", 'B', 11)
+        pdf.set_text_color(180, 0, 0)
+        pdf.cell(0, 8, f"DETECTED CONDITION: {condition_name.upper()}", ln=True)
+        pdf.set_text_color(0, 0, 0)
+        pdf.set_font("Helvetica", size=10)
+        pdf.multi_cell(0, 6, f"Summary: {recommendation[:300]}...")
+        
+        # Section II: Geographic Telemetry
+        pdf.ln(10)
+        pdf.set_font("Helvetica", 'B', 14)
+        pdf.cell(0, 10, " II. FIELD TELEMETRY & LOGISTICS", ln=True, fill=True)
+        pdf.ln(2)
+        pdf.set_font("Helvetica", size=10)
+        pdf.cell(0, 7, f"Location: {data.get('place', 'N/A')}, {data.get('state', 'N/A')}, {data.get('country', 'India')}", ln=True)
+        pdf.cell(0, 7, f"Soil Profile: {data.get('soil_type', 'N/A')} | Season: {data.get('season', 'N/A')}", ln=True)
+        pdf.cell(0, 7, f"Temperature: {data.get('temperature', 28.5)}C | Soil PH: {data.get('ph', 6.5)} | Nitrogen: {data.get('nitrogen', 2.50)}", ln=True)
+        
+        # Section III: Strategic Instruction
+        pdf.ln(10)
+        pdf.set_font("Helvetica", 'B', 14)
+        pdf.cell(0, 10, " III. INDUSTRIAL PROTOCOLS", ln=True, fill=True)
+        pdf.ln(5)
+        pdf.set_font("Helvetica", size=10)
+        pdf.multi_cell(0, 8, recommendation)
+        
+        # Footer
+        pdf.set_y(-30)
+        pdf.set_font("Helvetica", 'I', 8)
+        pdf.set_text_color(150, 150, 150)
+        pdf.cell(0, 10, "Official AgriVision Industrial Audit - Secured via Neural Link", align='C')
+
+        # Output to bytes
+        pdf_bytes = pdf.output(dest='S')
+        if isinstance(pdf_bytes, str): # Older fpdf version
+            pdf_bytes = pdf_bytes.encode('latin-1')
+            
+        b64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
+        return {"report_b64": b64_pdf, "filename": f"Agri_Audit_{datetime.datetime.now().strftime('%H%M%S')}.pdf"}
+        
+    except Exception as e:
+        return {"error": str(e)}
+
 def vision_diagnosis_logic(image_base64, language):
     hf_key = get_api_key("HUGGING_FACE_API_KEY")
     groq_key = get_groq_key()
@@ -315,3 +395,4 @@ def vision_diagnosis_logic(image_base64, language):
         }
     except Exception as e:
         return {"answer": f"Neural Link Error: {str(e)}", "speech_summary": "Sync Error."}
+

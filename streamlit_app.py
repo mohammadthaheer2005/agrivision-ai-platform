@@ -488,13 +488,21 @@ with st.sidebar:
             }
             res = call_backend("generate-report", payload=payload)
             if res:
-                st.session_state.last_report_url = res['report_url']
-                st.success("Industrial Audit Ready.")
+                if "report_b64" in res:
+                    # CLOUD MODE: Store base64 and filename
+                    st.session_state.last_report_b64 = res['report_b64']
+                    st.session_state.last_report_name = res['filename']
+                    st.success("Industrial Audit Compiled Locally.")
+                else:
+                    st.session_state.last_report_url = res['report_url']
+                    st.success("Industrial Audit Ready on Server.")
                 st.toast("Report compiled and uplinked.")
             else:
                 st.error("Failed to generate report. Check backend connectivity.")
 
 # --- MAIN DASHBOARD ---
+if 'last_report_b64' not in st.session_state: st.session_state.last_report_b64 = None
+if 'last_report_name' not in st.session_state: st.session_state.last_report_name = None
 st.markdown(f'''
 <div class="header-bar">
     <div class="header-title">🛰 AGRI-COMMAND V28.0</div>
@@ -559,7 +567,20 @@ with col_viz:
 
     if st.session_state.last_report_url:
         st.markdown('<div style="margin-top: 20px;"></div>', unsafe_allow_html=True)
-        st.link_button("📂 DOWNLOAD PDF AUDIT", st.session_state.last_report_url, type="primary", use_container_width=True)
+        st.link_button("📂 DOWNLOAD PDF AUDIT (SERVER)", st.session_state.last_report_url, type="primary", use_container_width=True)
+    
+    if st.session_state.last_report_b64:
+        st.markdown('<div style="margin-top: 20px;"></div>', unsafe_allow_html=True)
+        import base64
+        pdf_bytes = base64.b64decode(st.session_state.last_report_b64)
+        st.download_button(
+            label="📂 DOWNLOAD PDF AUDIT (CLOUD)",
+            data=pdf_bytes,
+            file_name=st.session_state.last_report_name,
+            mime="application/pdf",
+            type="primary",
+            use_container_width=True
+        )
 
     st.markdown('<div class="sidebar-section-label">Yield potential forecasting</div>', unsafe_allow_html=True)
     crops = ["Rice", "Wheat", "Corn", "Sugarcane", "Mango", "Banana"]
