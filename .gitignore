@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 .env
+backend/.env
 .venv
 env/
 venv/
@@ -18,6 +19,7 @@ backend_log.txt
 *.pdf
 diag_*.jpg
 diag_*.png
+backend/bio_security_backup.csv
 
 # Streamlit
 .streamlit/config.toml
@@ -26,3 +28,9 @@ diag_*.png
 # OS
 .DS_Store
 Thumbs.db
+
+# Other
+*.pkl
+node_modules/
+dist/
+build/
