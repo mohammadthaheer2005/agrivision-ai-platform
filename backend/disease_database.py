@@ -877,19 +877,32 @@ DISEASE_TREATMENTS = {
 
 def get_disease_info(disease_name):
     """
-    Get comprehensive treatment information for a disease
+    Get comprehensive treatment information for a disease with Smart Token Matching.
     """
+    if not disease_name:
+        return None
+
     # Normalize disease name
     disease_key = disease_name.strip().title()
+    disease_lower = disease_name.lower()
     
-    # Try exact match first
+    # 1. Try exact match first
     if disease_key in DISEASE_TREATMENTS:
         return DISEASE_TREATMENTS[disease_key]
     
-    # Try partial match
+    # 2. Try partial match
     for key in DISEASE_TREATMENTS:
-        if disease_key.lower() in key.lower() or key.lower() in disease_key.lower():
+        if disease_lower in key.lower() or key.lower() in disease_lower:
             return DISEASE_TREATMENTS[key]
+            
+    # 3. Smart Token Match (e.g., "Tomato Late Blight" matches "Tomato Blight")
+    query_tokens = set(disease_lower.replace("on", "").replace("the", "").split())
+    for key, info in DISEASE_TREATMENTS.items():
+        key_tokens = set(key.lower().split())
+        # If at least 2 significant words match, or 50% of the key matches
+        intersection = query_tokens.intersection(key_tokens)
+        if len(intersection) >= 2 or (len(intersection) >= 1 and len(intersection) / len(key_tokens) >= 0.5):
+            return info
     
     # Return generic info if not found
     return {

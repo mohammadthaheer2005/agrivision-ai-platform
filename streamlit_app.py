@@ -22,8 +22,51 @@ except ImportError:
     sys.path.append(os.path.join(os.path.dirname(__file__), "backend"))
     from disease_database import DISEASE_TREATMENTS, get_disease_info
 
-# --- PAGE CONFIG ---
-st.set_page_config(page_title="AGRI-COMMAND V28.0 | INDUSTRIAL CYBER HUB", page_icon="🛰", layout="wide")
+# --- PAGE CONFIG (SEO OPTIMIZED) ---
+st.set_page_config(
+    page_title="AgriVision AI | Advanced Crop Diagnosis & Agricultural Intelligence",
+    page_icon="🌱",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://github.com/mohammadthaheer2005/agrivision-ai-platform',
+        'Report a bug': 'https://github.com/mohammadthaheer2005/agrivision-ai-platform/issues',
+        'About': "# AgriVision AI\nWorldwide Agricultural Intelligence Platform."
+    }
+)
+
+# --- SEO META TAGS & STRUCTURED DATA ---
+st.markdown("""
+    <head>
+        <meta name="description" content="AgriVision AI: The world's most advanced AI-powered platform for crop disease detection, yield optimization, and precision agriculture intelligence.">
+        <meta name="keywords" content="Agriculture AI, Crop Disease Detection, Smart Farming, Precision Agriculture, Plant Pathology AI, Farmer Assistant, AgriVision">
+        <meta name="author" content="Mohammad Thaheer">
+        <link rel="canonical" href="https://agrivision-ai-platform.streamlit.app/">
+        
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://agrivision-ai-platform.streamlit.app/">
+        <meta property="og:title" content="AgriVision AI - Global Agricultural Intelligence">
+        <meta property="og:description" content="AI-driven crop diagnosis and yield optimization for the modern farmer.">
+        
+        <!-- Structured Data (JSON-LD) for Search Engines -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "AgriVision AI",
+          "operatingSystem": "Web",
+          "applicationCategory": "Agriculture",
+          "description": "Advanced AI for crop disease detection and agricultural intelligence.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }
+        </script>
+    </head>
+""", unsafe_allow_html=True)
 
 # --- CUSTOM CSS (ELITE CYBER-INDUSTRIAL V28.0) ---
 st.markdown("""
@@ -359,10 +402,22 @@ with st.sidebar:
         final_image = st.file_uploader("Upload Image", type=["jpg", "png"], label_visibility="collapsed")
 
     if final_image:
-        st.image(final_image, use_container_width=True)
+        # Load and display user image
+        img = Image.open(final_image)
+        
+        # V28.5: SUPER-RESIZE (Ensures Cloud Stability)
+        # Resize to max 800px width/height while maintaining aspect ratio
+        img.thumbnail((800, 800))
+        
+        st.image(img, use_container_width=True)
+        
         if st.button("🚀 START INDUSTRIAL AUDIT"):
             with st.spinner("Executing Precision Scan..."):
-                img_b64 = base64.b64encode(final_image.getvalue()).decode()
+                # Convert resized image to base64
+                buffered = BytesIO()
+                img.save(buffered, format="JPEG", quality=85)
+                img_b64 = base64.b64encode(buffered.getvalue()).decode()
+                
                 res = call_backend("vision-diagnosis", payload={"image_base64": img_b64, "language": lang})
                 if res:
                     ans = res.get("answer", "Faulty Connection.")
@@ -375,7 +430,13 @@ with st.sidebar:
                         "disease_info": disease_info,
                         "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
                     }
-                    st.session_state.audit = {"raw_res": ans, "vitality": random.randint(70, 95), "db": disease_info, "label": res.get("label", ans.split('.')[0])}
+                    st.session_state.audit = {
+                        "raw_res": ans, 
+                        "vitality": random.randint(70, 95), 
+                        "db": disease_info, 
+                        "label": res.get("label", ans.split('.')[0]),
+                        "confidence": res.get("confidence", "85%")
+                    }
                     # V36.0: NATURAL VOICE TRIGGER (BIO-SCAN)
                     st.session_state.last_speech_text = res.get("speech_summary", ans)
                     trigger_voice_output(st.session_state.last_speech_text, lang)

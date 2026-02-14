@@ -60,8 +60,18 @@ def get_real_commodity_prices():
     except: pass
     return None
 
+def get_api_key(name):
+    """Universal Key Discovery: Checks st.secrets then os.getenv"""
+    try:
+        import streamlit as st
+        if name in st.secrets:
+            return st.secrets[name]
+    except:
+        pass
+    return os.getenv(name)
+
 def get_groq_key():
-    return os.getenv("GROQ_API_KEY")
+    return get_api_key("GROQ_API_KEY")
 
 def translate_and_explain(text, target_lang):
     if target_lang == "English": return text, text
@@ -194,25 +204,28 @@ def chat_logic(message, language, context_data):
     except: pass
     return {"answer": "Offline or API Error.", "speech_summary": "Link failure."}
 
+from disease_database import get_disease_info, DISEASE_TREATMENTS
+
+# ... (rest of logic remains same, just updating vision_diagnosis_logic)
+
 def vision_diagnosis_logic(image_base64, language):
-    hf_key = os.getenv("HUGGING_FACE_API_KEY")
+    hf_key = get_api_key("HUGGING_FACE_API_KEY")
     groq_key = get_groq_key()
     if not hf_key or not groq_key: return {"answer": "Link Error: Key Missing"}
     
-    # V38.0: INDUSTRIAL-GRADE BOTANICAL REASONER
+    # V38.5: CONTEXT-AWARE INDUSTRIAL REASONER
+    supported_diseases = ", ".join(list(DISEASE_TREATMENTS.keys()))
+    
     vision_prompt = (
-        "Role: Expert Botanical Pathologist & ICAR Specialist. "
-        "Perform a high-fidelity scan of this image. "
-        "Step 1: Identify the ENTITY (Plant/Leaf/Fruit/Veggie). Analyze leaf shape, margins, and arrangement. "
-        "Step 2: Detect any CONDITION (Disease/Pest/Nutrient Deficiency or Healthy). "
-        "Step 3: Analyze Visual Symptoms (Color shifts, lesions, wilting, insect damage). "
+        "Role: Expert Botanical Pathologist. Perform high-fidelity analysis.\n"
+        f"KNOWN DATABASE: {supported_diseases}\n"
+        "STRICT TASK: Deep-scan the image and identify the CONDITION. "
+        "If a match from the KNOWN DATABASE is likely, use that specific name.\n"
         "Output Format STRICTLY:\n"
-        "ENTITY: [Crop Name & Variety]\n"
-        "CONDITION: [Specific Status]\n"
-        "CONFIDENCE: [Percentage 0-100%]\n"
-        "VISUAL_MARKERS: [Color, Texture, Shape observations]\n"
-        "BIOLOGICAL_CAUSE: [Specific Pathogen/Factor]\n"
-        "TREATMENT_PROTOCOLS: [Chemical Names (e.g. Mancozeb) AND Organic Methods (e.g. Neem Oil)]"
+        "ENTITY: [Crop Name]\n"
+        "CONDITION: [Specific Disease Name or 'Healthy']\n"
+        "CONFIDENCE: [Percentage]\n"
+        "TREATMENT_PROTOCOLS: [Summary]"
     )
     
     try:
