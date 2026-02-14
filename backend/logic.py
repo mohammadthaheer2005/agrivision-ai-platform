@@ -219,12 +219,17 @@ def generate_report_logic(payload):
         import datetime
         from io import BytesIO
 
+        def clean(txt):
+            return str(txt).encode('ascii', 'ignore').decode('ascii')
+
         data = payload.get("data", {})
-        recommendation = payload.get("recommendation", "Industrial protocols deployed.")
+        recommendation = clean(payload.get("recommendation", "Industrial protocols deployed."))
         language = payload.get("language", "English")
-        history = payload.get("history", [])
-        condition_name = payload.get("condition_name", "Unknown")
-        market = payload.get("market_snapshot", {})
+        condition_name = clean(payload.get("condition_name", "Unknown"))
+        place = clean(data.get('place', 'N/A'))
+        state = clean(data.get('state', 'N/A'))
+        soil = clean(data.get('soil_type', 'N/A'))
+        season = clean(data.get('season', 'N/A'))
 
         pdf = FPDF()
         pdf.add_page()
@@ -259,8 +264,8 @@ def generate_report_logic(payload):
         pdf.cell(0, 10, " II. FIELD TELEMETRY & LOGISTICS", ln=True, fill=True)
         pdf.ln(2)
         pdf.set_font("Helvetica", size=10)
-        pdf.cell(0, 7, f"Location: {data.get('place', 'N/A')}, {data.get('state', 'N/A')}, {data.get('country', 'India')}", ln=True)
-        pdf.cell(0, 7, f"Soil Profile: {data.get('soil_type', 'N/A')} | Season: {data.get('season', 'N/A')}", ln=True)
+        pdf.cell(0, 7, f"Location: {place}, {state}, {clean(data.get('country', 'India'))}", ln=True)
+        pdf.cell(0, 7, f"Soil Profile: {soil} | Season: {season}", ln=True)
         pdf.cell(0, 7, f"Temperature: {data.get('temperature', 28.5)}C | Soil PH: {data.get('ph', 6.5)} | Nitrogen: {data.get('nitrogen', 2.50)}", ln=True)
         
         # Section III: Strategic Instruction
@@ -278,15 +283,15 @@ def generate_report_logic(payload):
         pdf.cell(0, 10, "Official AgriVision Industrial Audit - Secured via Neural Link", align='C')
 
         # Output to bytes
-        pdf_bytes = pdf.output(dest='S')
-        if isinstance(pdf_bytes, str): # Older fpdf version
-            pdf_bytes = pdf_bytes.encode('latin-1')
+        pdf_bytes = pdf.output()
+        if isinstance(pdf_bytes, bytearray):
+            pdf_bytes = bytes(pdf_bytes)
             
         b64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
         return {"report_b64": b64_pdf, "filename": f"Agri_Audit_{datetime.datetime.now().strftime('%H%M%S')}.pdf"}
         
     except Exception as e:
-        return {"error": str(e)}
+        return {"error": f"PDF Logic Error: {str(e)}"}
 
 def vision_diagnosis_logic(image_base64, language):
     hf_key = get_api_key("HUGGING_FACE_API_KEY")

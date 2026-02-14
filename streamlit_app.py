@@ -489,15 +489,20 @@ with st.sidebar:
             }
             res = call_backend("generate-report", payload=payload)
             if res:
-                if "report_b64" in res:
+                if "error" in res:
+                    st.error(f"🚨 Report Engine Error: {res['error']}")
+                elif "report_b64" in res:
                     # CLOUD MODE: Store base64 and filename
                     st.session_state.last_report_b64 = res['report_b64']
                     st.session_state.last_report_name = res['filename']
                     st.success("Industrial Audit Compiled Locally.")
-                else:
+                    st.toast("Report compiled and uplinked.")
+                elif "report_url" in res:
                     st.session_state.last_report_url = res['report_url']
                     st.success("Industrial Audit Ready on Server.")
-                st.toast("Report compiled and uplinked.")
+                    st.toast("Report compiled and uplinked.")
+                else:
+                    st.error("Protocol Error: Report generated but link missing.")
             else:
                 st.error("Failed to generate report. Check backend connectivity.")
 
