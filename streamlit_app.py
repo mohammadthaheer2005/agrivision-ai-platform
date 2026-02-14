@@ -348,12 +348,19 @@ with st.sidebar:
                 st.success(f"✓ Location Context Set: {place}, {state}")
 
     st.markdown('<div class="sidebar-section-label">Bio-Scan Uplink</div>', unsafe_allow_html=True)
+    
+    # Multi-Modal Input: Camera or File Upload
+    cam_file = st.camera_input("Capture Crop Image", label_visibility="collapsed")
     uploaded_file = st.file_uploader("Upload Image", type=["jpg", "png"], label_visibility="collapsed")
-    if uploaded_file:
-        st.image(uploaded_file, use_container_width=True)
+    
+    # Process whichever image is available
+    final_image = cam_file if cam_file else uploaded_file
+
+    if final_image:
+        st.image(final_image, use_container_width=True)
         if st.button("🚀 START INDUSTRIAL AUDIT"):
             with st.spinner("Executing Precision Scan..."):
-                img_b64 = base64.b64encode(uploaded_file.getvalue()).decode()
+                img_b64 = base64.b64encode(final_image.getvalue()).decode()
                 res = call_backend("vision-diagnosis", payload={"image_base64": img_b64, "language": lang})
                 if res:
                     ans = res.get("answer", "Faulty Connection.")
