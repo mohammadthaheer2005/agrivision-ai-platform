@@ -199,7 +199,19 @@ def vision_diagnosis_logic(image_base64, language):
     groq_key = get_groq_key()
     if not hf_key or not groq_key: return {"answer": "Key Missing"}
     
-    vision_prompt = "Role: Senior Plant Pathologist. Identify Crop and Disease in detail. Output Format: ENTITY: [name]\nCONDITION: [status]\nSYMPTOMS: [detail]\nMANAGEMENT: [advice]"
+    vision_prompt = (
+        "Role: Expert Botanical Scientist and Plant Pathologist. "
+        "Task: Identify the plant and any potential diseases with clinical precision. "
+        "Logic: Analyze botanical markers like leaf arrangement (pinnate/palmate), margin types (serrated/smooth), and leaflet shape. "
+        "Distinction Note: Neem has serrated (saw-like) margins and pointed tips. Moringa has small, oval-shaped leaflets with smooth margins. Do not confuse them. "
+        "Output Format: "
+        "ENTITY: [Crop Name and Variety]\n"
+        "CONDITION: [Specific Disease or 'Healthy']\n"
+        "CONFIDENCE: [0-100%]\n"
+        "SYMPTOMS: [Visual botanical markers observed]\n"
+        "CAUSE: [Scientific Pathogen or Environmental factor]\n"
+        "MANAGEMENT: [Industrial-grade agricultural advice]"
+    )
     
     try:
         payload_hf = {

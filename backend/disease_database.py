@@ -677,7 +677,46 @@ DISEASE_TREATMENTS = {
         ],
         "recovery_timeline": "2-3 months for new healthy leaf emergence"
     },
+    "Healthy Neem": {
+        "severity": "None",
+        "symptoms": ["Green, serrated leaves", "Healthy leaf margins", "Vibrant growth"],
+        "causes": ["Optimal soil and water conditions", "Natural pest resistance"],
+        "fungicides": [],
+        "preventive_measures": ["Regular monitoring", "Balanced NPK application"],
+        "treatment_schedule": {"Day 1": "Maintain current care protocol"},
+        "safety_precautions": ["No chemicals required"],
+        "recovery_timeline": "Maintenance mode"
+    },
+    
+    "Neem Leaf Webber": {
+        "severity": "Moderate",
+        "symptoms": ["Leaves webbed together", "Defoliation", "Scraping of green matter"],
+        "causes": ["Larvae of Palpita unionalis", "Humid weather"],
+        "fungicides": [
+            {
+                "name": "Malathion 50 EC",
+                "active_ingredient": "Malathion",
+                "dosage": "2 ml/L water",
+                "application": "Apply as soon as webbing is noticed",
+                "brands": ["Malathion", "Cythion"]
+            }
+        ],
+        "preventive_measures": ["Prune webbed branches", "Light traps", "Spray Neem oil"],
+        "treatment_schedule": {"Day 1": "Identify and remove webbed clusters", "Day 3": "Apply Malathion spray"},
+        "safety_precautions": ["Avoid direct contact with spray"],
+        "recovery_timeline": "10-15 days"
+    },
 
+    "Healthy Moringa": {
+        "severity": "None",
+        "symptoms": ["Small, oval leaflets", "Smooth margins", "Light green foliage"],
+        "causes": ["Well-drained soil", "Adequate sunlight"],
+        "fungicides": [],
+        "preventive_measures": ["Mulching", "Proper pruning"],
+        "treatment_schedule": {"Day 1": "Routine care"},
+        "safety_precautions": ["No chemical treatment needed"],
+        "recovery_timeline": "Healthy state"
+    },
     "Coconut Bud Rot": {
         "severity": "Lethal",
         "symptoms": [

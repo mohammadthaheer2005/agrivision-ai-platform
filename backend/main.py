@@ -443,21 +443,17 @@ async def vision_diagnosis(req: VisionRequest):
     
     # V35.0: FULL REAL-DATA BOTANICAL IDENTIFICATION (GOOGLE-LENS STYLE)
     vision_prompt = (
-        "Role: Senior Agricultural Scientist & Plant Pathologist. "
-        "Task: Identify the plant and disease in the image with 100% accuracy. "
-        "Logic: Look for specific fungal, bacterial, or viral markers. "
-        "Instructions: "
-        "1. Identify the ENTITY (e.g., Watermelon Leaf, Tomato Fruit). "
-        "2. Identify the CONDITION (e.g., Anthracnose, Late Blight, Healthy). "
-        "3. Describe VISUAL SYMPTOMS in detail (e.g., sunken spots, dark lesions). "
-        "4. Provide a SCIENTIFIC CAUSE. "
-        "Output Format exactly like this: "
-        "ENTITY: [Crop Name]\n"
-        "CONDITION: [Specific Disease Name]\n"
+        "Role: Expert Botanical Scientist and Plant Pathologist. "
+        "Task: Identify the plant and any potential diseases with clinical precision. "
+        "Logic: Analyze botanical markers like leaf arrangement (pinnate/palmate), margin types (serrated/smooth), and leaflet shape. "
+        "Distinction Note: Neem has serrated (saw-like) margins and pointed tips. Moringa has small, oval-shaped leaflets with smooth margins. Do not confuse them. "
+        "Output Format: "
+        "ENTITY: [Crop Name and Variety]\n"
+        "CONDITION: [Specific Disease or 'Healthy']\n"
         "CONFIDENCE: [0-100%]\n"
-        "SYMPTOMS: [Visual description]\n"
-        "CAUSE: [Pathogen name]\n"
-        "MANAGEMENT: [Short summary]"
+        "SYMPTOMS: [Visual botanical markers observed]\n"
+        "CAUSE: [Scientific Pathogen or Environmental factor]\n"
+        "MANAGEMENT: [Industrial-grade agricultural advice]"
     )
     
     try:
