@@ -485,6 +485,7 @@ with st.sidebar:
                 "language": lang, "history": st.session_state.chat_history,
                 "market_snapshot": market,
                 "condition_name": st.session_state.audit.get('label') if st.session_state.audit else "Unknown",
+                "disease_info": st.session_state.audit.get('db') if st.session_state.audit else None,
                 "country": country, "state": state, "place": place, "soil_type": soil, "season": season
             }
             res = call_backend("generate-report", payload=payload)
