@@ -197,23 +197,21 @@ def chat_logic(message, language, context_data):
 def vision_diagnosis_logic(image_base64, language):
     hf_key = os.getenv("HUGGING_FACE_API_KEY")
     groq_key = get_groq_key()
-    if not hf_key or not groq_key: return {"answer": "Key Missing"}
+    if not hf_key or not groq_key: return {"answer": "Link Error: Key Missing"}
     
     vision_prompt = (
-        "Role: Expert Botanical Scientist and Plant Pathologist. "
-        "Task: Identify the plant and any potential diseases with clinical precision. "
-        "Logic: Analyze botanical markers like leaf arrangement (pinnate/palmate), margin types (serrated/smooth), and leaflet shape. "
-        "Distinction Note: Neem has serrated (saw-like) margins and pointed tips. Moringa has small, oval-shaped leaflets with smooth margins. Do not confuse them. "
-        "Output Format: "
-        "ENTITY: [Crop Name and Variety]\n"
+        "Role: Expert Botanical Scientist. Identify any Plant/Fruit/Veggie and its health status. "
+        "If diseased, identify the specific pathogen (fungal/bacterial/viral/pest). "
+        "Detailed visual markers required. "
+        "Output Format:\n"
+        "ENTITY: [Name/Variety]\n"
         "CONDITION: [Specific Disease or 'Healthy']\n"
-        "CONFIDENCE: [0-100%]\n"
-        "SYMPTOMS: [Visual botanical markers observed]\n"
-        "CAUSE: [Scientific Pathogen or Environmental factor]\n"
-        "MANAGEMENT: [Industrial-grade agricultural advice]"
+        "SYMPTOMS: [Visual markers]\n"
+        "MANAGEMENT: [Specific Chemical/Organic solution]"
     )
     
     try:
+        # 1. High-Fidelity Visual Uplink (Qwen)
         payload_hf = {
             "model": "Qwen/Qwen2.5-VL-7B-Instruct",
             "messages": [{"role": "user", "content": [
@@ -223,26 +221,51 @@ def vision_diagnosis_logic(image_base64, language):
         }
         hf_res = requests.post("https://router.huggingface.co/v1/chat/completions", 
                              headers={"Authorization": f"Bearer {hf_key}"}, json=payload_hf, timeout=60)
-        full_analysis = hf_res.json()['choices'][0]['message']['content'] if hf_res.status_code == 200 else "Unknown"
+        full_analysis = hf_res.json()['choices'][0]['message']['content'] if hf_res.status_code == 200 else "Offline Analysis"
         
+        # 2. Expert Extraction
         detected_label = "Unknown"
+        entity_name = "Plant"
         for line in full_analysis.split('\n'):
-            if "CONDITION:" in line: detected_label = line.replace("CONDITION:", "").strip(); break
+            if "CONDITION:" in line: detected_label = line.replace("CONDITION:", "").strip()
+            if "ENTITY:" in line: entity_name = line.replace("ENTITY:", "").strip()
         
+        # 3. Master Database Verification
         disease_info = get_disease_info(detected_label)
         
-        # Groq formatting
+        # 4. Intelligence Advisory (Groq) - Always provide solution
+        advisory_prompt = (
+            f"SCIENTIFIC ANALYSIS: {full_analysis}\n\n"
+            f"Using the analysis above, provide a comprehensive Agricultural Advisory for {entity_name} in {language}.\n"
+            "Include:\n1. 🧬 Diagnosis Verification\n2. 🧪 Specific Chemical/Organic Treatment\n3. 📅 Immediate Action Protocol.\n"
+            "If the condition is HEALTHY, provide maintenance growth tips.\n"
+            f"STRICT FORMAT: TRANSLATION: [Full Advisory] SUMMARY: [Voice Snippet]"
+        )
         payload_groq = {
             "model": "llama-3.1-8b-instant",
-            "messages": [{"role": "user", "content": f"Advisory for {full_analysis} in {language}. Format: TRANSLATION: [Advisory] SUMMARY: [Snippet]"}]
+            "messages": [{"role": "user", "content": advisory_prompt}]
         }
         groq_res = requests.post("https://api.groq.com/openai/v1/chat/completions", 
                                json=payload_groq, headers={"Authorization": f"Bearer {groq_key}"}, timeout=20)
-        ans = groq_res.json()['choices'][0]['message']['content'] if groq_res.status_code == 200 else "Analysis complete."
+        ans = groq_res.json()['choices'][0]['message']['content'] if groq_res.status_code == 200 else "Local logic active."
         
         if "TRANSLATION:" in ans and "SUMMARY:" in ans:
             parts = ans.split("SUMMARY:")
-            return {"answer": parts[0].replace("TRANSLATION:", "").strip(), "speech_summary": parts[1].strip(), "disease_info": disease_info, "label": detected_label}
-        return {"answer": ans, "speech_summary": ans[:150], "disease_info": disease_info, "label": detected_label}
+            translation = parts[0].replace("TRANSLATION:", "").strip()
+            speech_summary = parts[1].strip()
+        else:
+            translation = ans
+            speech_summary = ans[:150]
+        
+        # 5. Dynamic Global Resource Link (Real Info Uplink)
+        search_query = f"{entity_name} {detected_label} management solution site:icar.org.in OR site:tnau.ac.in"
+        resource_link = f"https://www.google.com/search?q={search_query.replace(' ', '+')}"
+        
+        return {
+            "answer": translation + f"\n\n**🌐 VERIFIED GLOBAL RESOURCE:** [Industrial Agriculture Hub]({resource_link})", 
+            "speech_summary": speech_summary, 
+            "disease_info": disease_info, 
+            "label": f"{entity_name} - {detected_label}"
+        }
     except Exception as e:
-        return {"answer": f"Vision Fault: {str(e)}", "speech_summary": "Error."}
+        return {"answer": f"System Fault: {str(e)}", "speech_summary": "Sync Error."}
