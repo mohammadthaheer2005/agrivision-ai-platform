@@ -61,12 +61,14 @@ def get_real_commodity_prices():
     return None
 
 def get_api_key(name):
-    """Universal Key Discovery: Checks st.secrets then os.getenv"""
+    """Universal Key Discovery: Checks st.secrets then os.getenv safely"""
     try:
         import streamlit as st
+        # Check if running on Streamlit Cloud (where secrets always exist) 
+        # or if local secrets file exists to avoid property access warning
         if name in st.secrets:
             return st.secrets[name]
-    except:
+    except (ImportError, FileNotFoundError, Exception):
         pass
     return os.getenv(name)
 
@@ -349,11 +351,16 @@ def generate_report_logic(payload):
         pdf.cell(190, 7, f"Environmental: {data.get('temperature', 28.5)}C | PH: {data.get('ph', 6.5)} | Nitrogen: {data.get('nitrogen', 2.50)}", ln=True)
 
         # --- IV. MISSION TRANSCRIPT ---
-        pdf.add_page()
+        # Add page break only if we are near the bottom
+        if pdf.get_y() > 180:
+            pdf.add_page()
+        else:
+            pdf.ln(10)
+            
         pdf.set_font("Helvetica", 'B', 14)
         pdf.set_fill_color(240, 240, 240)
         pdf.cell(190, 10, " IV. FULL MISSION LOGS & AUDIT TRANSCRIPT", ln=True, fill=True)
-        pdf.ln(5)
+        pdf.ln(3)
         for msg in history[-12:]:
             role = clean(msg.get("role", "USER")).upper()
             content = clean(msg.get("content", ""))
