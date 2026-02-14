@@ -172,6 +172,7 @@ st.markdown("""
 API_BASE = "http://localhost:8002/api"
 
 def call_backend(endpoint, method="POST", payload=None):
+    # Try localhost first (Local Dev Mode)
     try:
         url = f"{API_BASE}/{endpoint}"
         if method == "POST":
@@ -179,14 +180,34 @@ def call_backend(endpoint, method="POST", payload=None):
             if payload and "context_data" in payload:
                 if "history" not in payload["context_data"]:
                     payload["context_data"]["history"] = st.session_state.chat_history
-            
-            res = requests.post(url, json=payload, timeout=30)
+            res = requests.post(url, json=payload, timeout=2) # Short timeout to check if alive
         else:
-            res = requests.get(url, timeout=10)
-        return res.json() if res.status_code == 200 else None
+            res = requests.get(url, timeout=2)
+        if res.status_code == 200:
+            return res.json()
+    except:
+        pass
+
+    # FALLBACK: Local Logic Mode (Streamlit Cloud Mode)
+    try:
+        from backend import logic
+        if endpoint == "geographic-intelligence":
+            return logic.get_geographic_intelligence_logic(payload)
+        elif endpoint == "chat":
+            return logic.chat_logic(payload['message'], payload['language'], payload['context_data'])
+        elif endpoint == "vision-diagnosis":
+            return logic.vision_diagnosis_logic(payload['image_base64'], payload['language'])
+        elif endpoint == "live-data":
+            weather = logic.get_real_weather(payload.get("place", "Coimbatore")) if payload else None
+            market = logic.get_real_commodity_prices()
+            return {"telemetry": weather or {}, "market": market or {}}
+        elif endpoint == "generate-report":
+            # Reports are tricky on cloud, skipping for standalone preview
+            return None
     except Exception as e:
-        st.error(f"⚠️ Backend Link Error: {str(e)}")
-        return None
+        st.error(f"⚠️ Standalone Engine Error: {str(e)}")
+    
+    return None
 
 # Location autocomplete removed per user request
 
