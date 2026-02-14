@@ -208,6 +208,7 @@ from disease_database import get_disease_info, DISEASE_TREATMENTS
 
 # ... (rest of logic remains same, just updating vision_diagnosis_logic)
 
+def generate_report_logic(payload):
     try:
         from fpdf import FPDF
         import base64
