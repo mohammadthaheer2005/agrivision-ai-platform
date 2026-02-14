@@ -232,116 +232,119 @@ def generate_report_logic(payload):
 
         pdf = FPDF()
         pdf.add_page()
+        pdf.set_auto_page_break(auto=True, margin=15)
         
-        # --- HEADER ---
+        # --- HEADER (Enhanced Stability) ---
         pdf.set_fill_color(10, 20, 40)
-        pdf.rect(0, 0, 210, 40, 'F')
-        pdf.set_text_color(255, 255, 255)
         pdf.set_font("Helvetica", 'B', 20)
-        pdf.cell(0, 15, "AGRI-COMMAND MASTER AUDIT V28.8", ln=True, align='C')
-        pdf.set_font("Helvetica", size=10)
-        pdf.cell(0, 10, f"GENERATED: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | INDUSTRIAL UPLINK: ACTIVE", ln=True, align='C')
+        pdf.set_text_color(255, 255, 255)
+        # Use a single large cell as a banner
+        pdf.cell(190, 20, "AGRI-COMMAND MASTER AUDIT V28.8", ln=True, align='C', fill=True)
+        pdf.set_font("Helvetica", size=9)
+        pdf.cell(190, 10, f"GENERATED: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | INDUSTRIAL UPLINK: ACTIVE", ln=True, align='C', fill=True)
         
-        pdf.ln(15)
+        pdf.ln(10)
         pdf.set_text_color(0, 0, 0)
         
         # --- I. BIOLOGICAL VISION AUDIT ---
         pdf.set_font("Helvetica", 'B', 14)
         pdf.set_fill_color(230, 240, 255)
-        pdf.cell(0, 10, " I. BIOLOGICAL VISION DIAGNOSIS", ln=True, fill=True)
+        pdf.cell(190, 10, " I. BIOLOGICAL VISION DIAGNOSIS", ln=True, fill=True)
         pdf.ln(2)
         pdf.set_font("Helvetica", 'B', 12)
         pdf.set_text_color(180, 0, 0)
-        pdf.cell(0, 8, f"DETECTED CONDITION: {condition_name.upper()}", ln=True)
+        pdf.cell(190, 8, f"DETECTED CONDITION: {condition_name.upper()}", ln=True)
         pdf.set_text_color(0, 0, 0)
         
         if disease_info and disease_info.get("severity") != "Unknown":
             pdf.set_font("Helvetica", 'B', 10)
-            pdf.cell(0, 7, f"SEVERITY: {clean(disease_info.get('severity'))}", ln=True)
+            pdf.cell(190, 7, f"SEVERITY: {clean(disease_info.get('severity'))}", ln=True)
             
             pdf.set_font("Helvetica", 'B', 10)
-            pdf.set_text_color(0, 100, 0)
-            pdf.cell(0, 7, "CAUSES & SYMPTOMS:", ln=True)
+            pdf.set_text_color(0, 102, 51)
+            pdf.cell(190, 7, "CAUSES & SYMPTOMS:", ln=True)
             pdf.set_font("Helvetica", size=9)
             pdf.set_text_color(0, 0, 0)
             for symptom in disease_info.get("symptoms", []):
-                pdf.cell(5)
-                pdf.multi_cell(0, 5, f"- {clean(symptom)}")
+                pdf.set_x(15)
+                pdf.multi_cell(180, 5, f"- {clean(symptom)}")
             
             # Chemicals
             pdf.ln(2)
             pdf.set_font("Helvetica", 'B', 10)
-            pdf.set_text_color(0, 0, 150)
-            pdf.cell(0, 7, "RECOMMENDED TREATMENTS:", ln=True)
+            pdf.set_text_color(0, 51, 153)
+            pdf.cell(190, 7, "RECOMMENDED TREATMENTS:", ln=True)
             pdf.set_font("Helvetica", size=9)
             pdf.set_text_color(0, 0, 0)
             for fungicide in disease_info.get("fungicides", []):
                 name = clean(fungicide.get('name', 'N/A'))
                 dosage = clean(fungicide.get('dosage', 'N/A'))
-                pdf.cell(5)
-                pdf.cell(0, 5, f"* {name} (Dosage: {dosage})", ln=True)
+                pdf.set_x(15)
+                pdf.cell(180, 5, f"* {name} (Dosage: {dosage})", ln=True)
                 
             # Schedule
             if disease_info.get("treatment_schedule"):
                 pdf.ln(2)
                 pdf.set_font("Helvetica", 'B', 10)
-                pdf.cell(0, 7, "TREATMENT SCHEDULE:", ln=True)
+                pdf.cell(190, 7, "TREATMENT SCHEDULE:", ln=True)
                 pdf.set_font("Helvetica", size=9)
                 for day, action in disease_info.get("treatment_schedule", {}).items():
-                    pdf.cell(5)
-                    pdf.cell(0, 5, f"{clean(day)}: {clean(action)}", ln=True)
+                    pdf.set_x(15)
+                    pdf.cell(180, 5, f"{clean(day)}: {clean(action)}", ln=True)
         else:
             pdf.set_font("Helvetica", size=10)
-            pdf.multi_cell(0, 6, "AI-Generated recommendation for unidentified pathology: Use clean water, maintain soil PH, and apply a broad-spectrum bio-fungicide.")
+            pdf.multi_cell(190, 6, "AI-Generated recommendation for unidentified pathology: Maintain soil PH and apply a broad-spectrum bio-fungicide.")
 
         # --- II. MARKET INTELLIGENCE ---
-        pdf.ln(10)
+        pdf.ln(5)
         pdf.set_font("Helvetica", 'B', 14)
         pdf.set_fill_color(240, 240, 240)
-        pdf.cell(0, 10, " II. MARKET INTELLIGENCE & COMMODITY DATA", ln=True, fill=True)
+        pdf.cell(190, 10, " II. MARKET INTELLIGENCE & COMMODITY DATA", ln=True, fill=True)
         pdf.ln(2)
         pdf.set_font("Helvetica", size=10)
         if market:
             for crop, specs in market.items():
                 price = specs.get('price', 0)
                 change = specs.get('change', 0)
-                pdf.cell(60, 7, f"{clean(crop)} Global Index:", border=0)
-                pdf.cell(40, 7, f"${price} ({'+' if change>=0 else ''}{change}%)", ln=True)
+                pdf.cell(95, 7, f" {clean(crop)} Global Index:", border=1)
+                pdf.cell(95, 7, f" ${price} ({'+' if change>=0 else ''}{change}%)", ln=True, border=1)
         else:
-            pdf.cell(0, 10, "Live market data offline. Using satellite price index projections.", ln=True)
+            pdf.cell(190, 10, "Live market data offline. Using satellite price projections.", ln=True)
 
         # --- III. FIELD TELEMETRY ---
-        pdf.ln(10)
+        pdf.ln(5)
         pdf.set_font("Helvetica", 'B', 14)
         pdf.set_fill_color(240, 240, 240)
-        pdf.cell(0, 10, " III. FIELD TELEMETRY & LOGISTICS", ln=True, fill=True)
+        pdf.cell(190, 10, " III. FIELD TELEMETRY & LOGISTICS", ln=True, fill=True)
         pdf.ln(2)
         pdf.set_font("Helvetica", size=10)
-        pdf.cell(0, 7, f"Location: {clean(data.get('place', 'N/A'))}, {clean(data.get('state', 'N/A'))}", ln=True)
-        pdf.cell(0, 7, f"Temperature: {data.get('temperature', 28.5)}C | Soil PH: {data.get('ph', 6.5)} | Nitrogen: {data.get('nitrogen', 2.50)}", ln=True)
-        pdf.cell(0, 7, f"Soil Profile: {clean(data.get('soil_type', 'N/A'))} | Season: {clean(data.get('season', 'N/A'))}", ln=True)
+        pdf.cell(190, 7, f"Location: {clean(data.get('place', 'N/A'))}, {clean(data.get('state', 'N/A'))}", ln=True)
+        pdf.cell(190, 7, f"Temperature: {data.get('temperature', 28.5)}C | PH: {data.get('ph', 6.5)} | N: {data.get('nitrogen', 2.50)}", ln=True)
 
         # --- IV. MISSION TRANSCRIPT ---
         pdf.add_page()
         pdf.set_font("Helvetica", 'B', 14)
         pdf.set_fill_color(240, 240, 240)
-        pdf.cell(0, 10, " IV. MISSION TRANSCRIPT & TACTICAL LOGS", ln=True, fill=True)
+        pdf.cell(190, 10, " IV. MISSION TRANSCRIPT & TACTICAL LOGS", ln=True, fill=True)
         pdf.ln(5)
         pdf.set_font("Helvetica", size=9)
-        for msg in history[-10:]: # Last 10 messages
+        for msg in history[-10:]:
             role = clean(msg.get("role", "USER")).upper()
             content = clean(msg.get("content", ""))
+            if not content: continue
             pdf.set_font("Helvetica", 'B', 9)
-            pdf.cell(0, 6, f"[{role}]:", ln=True)
+            pdf.set_text_color(0, 50, 100)
+            pdf.cell(190, 6, f"[{role}]:", ln=True)
             pdf.set_font("Helvetica", size=9)
-            pdf.multi_cell(0, 5, content)
+            pdf.set_text_color(0, 0, 0)
+            pdf.multi_cell(190, 5, content)
             pdf.ln(2)
 
         # --- FOOTER ---
         pdf.set_y(-25)
         pdf.set_font("Helvetica", 'I', 8)
         pdf.set_text_color(150, 150, 150)
-        pdf.cell(0, 10, f"Official AgriVision Master Audit | Version 28.8 | Language: {language}", align='C')
+        pdf.cell(190, 10, f"Official AgriVision Master Audit | Industrial Hub | Language: {language}", align='C')
 
         # Output to bytes
         pdf_bytes = pdf.output()
@@ -353,7 +356,7 @@ def generate_report_logic(payload):
         
     except Exception as e:
         import traceback
-        return {"error": f"PDF Master Engine Error: {str(e)} | Trace: {traceback.format_exc()[:100]}"}
+        return {"error": f"PDF Master Error: {str(e)} | Fail-point: {traceback.format_exc().splitlines()[-2]}"}
 
 def vision_diagnosis_logic(image_base64, language):
     hf_key = get_api_key("HUGGING_FACE_API_KEY")
