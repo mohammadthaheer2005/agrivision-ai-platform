@@ -349,12 +349,14 @@ with st.sidebar:
 
     st.markdown('<div class="sidebar-section-label">Bio-Scan Uplink</div>', unsafe_allow_html=True)
     
-    # Multi-Modal Input: Camera or File Upload
-    cam_file = st.camera_input("Capture Crop Image", label_visibility="collapsed")
-    uploaded_file = st.file_uploader("Upload Image", type=["jpg", "png"], label_visibility="collapsed")
+    # Selection Mode: Prevent camera from opening automatically
+    input_mode = st.radio("Input Source", ["📁 UPLOAD", "📸 CAMERA"], horizontal=True, label_visibility="collapsed")
     
-    # Process whichever image is available
-    final_image = cam_file if cam_file else uploaded_file
+    final_image = None
+    if input_mode == "📸 CAMERA":
+        final_image = st.camera_input("Capture Crop Image", label_visibility="collapsed")
+    else:
+        final_image = st.file_uploader("Upload Image", type=["jpg", "png"], label_visibility="collapsed")
 
     if final_image:
         st.image(final_image, use_container_width=True)
