@@ -245,8 +245,7 @@ def call_backend(endpoint, method="POST", payload=None):
             market = logic.get_real_commodity_prices()
             return {"telemetry": weather or {}, "market": market or {}}
         elif endpoint == "generate-report":
-            # Reports are tricky on cloud, skipping for standalone preview
-            return None
+            return logic.generate_report_logic(payload)
     except Exception as e:
         st.error(f"⚠️ Standalone Engine Error: {str(e)}")
     
