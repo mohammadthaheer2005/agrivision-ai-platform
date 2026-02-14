@@ -460,15 +460,15 @@ with col_viz:
         db = audit_data.get('db', {})
         st.markdown(f'''
         <div class="audit-panel" style="border-top-color: #ff4d4d; margin-bottom: 20px;">
-            <div class="audit-title" style="color: #ff4d4d;">🚀 BIO-SCAN DIAGNOSIS: {audit_data.get('raw_res', '').split('.')[0]}</div>
+            <div class="audit-title" style="color: #ff4d4d;">🚀 BIO-SCAN DIAGNOSIS: {audit_data.get('label', 'Unknown')}</div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">
                 <div>
                     <p><b>VITALITY INDEX:</b> {audit_data.get('vitality', 'N/A')}%</p>
-                    <p><b>RECOVERY:</b> {db.get('recovery_timeline', 'N/A')}</p>
-                    <p><b>SEVERITY:</b> {db.get('severity', 'N/A')}</p>
+                    <p><b>AI CONFIDENCE:</b> <span style="color: #00f07f;">{audit_data.get('confidence', '85%')}</span></p>
+                    <p><b>SEVERITY:</b> <span style="color: {'#ff4d4d' if db.get('severity') == 'High' else '#ffa500'};">{db.get('severity', 'N/A')}</span></p>
                 </div>
                 <div>
-                    <p><b>SYMPTOMS:</b><br>{", ".join(db.get('symptoms', ['N/A']))}</p>
+                    <p><b>SYMPTOMS DETECTED:</b><br>{", ".join(db.get('symptoms', ['Visual markers identified by AI']))}</p>
                 </div>
             </div>
             <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #30363d;">

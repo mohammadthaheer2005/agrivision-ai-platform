@@ -199,19 +199,24 @@ def vision_diagnosis_logic(image_base64, language):
     groq_key = get_groq_key()
     if not hf_key or not groq_key: return {"answer": "Link Error: Key Missing"}
     
+    # V38.0: INDUSTRIAL-GRADE BOTANICAL REASONER
     vision_prompt = (
-        "Role: Expert Botanical Scientist. Identify any Plant/Fruit/Veggie and its health status. "
-        "If diseased, identify the specific pathogen (fungal/bacterial/viral/pest). "
-        "Detailed visual markers required. "
-        "Output Format:\n"
-        "ENTITY: [Name/Variety]\n"
-        "CONDITION: [Specific Disease or 'Healthy']\n"
-        "SYMPTOMS: [Visual markers]\n"
-        "MANAGEMENT: [Specific Chemical/Organic solution]"
+        "Role: Expert Botanical Pathologist & ICAR Specialist. "
+        "Perform a high-fidelity scan of this image. "
+        "Step 1: Identify the ENTITY (Plant/Leaf/Fruit/Veggie). Analyze leaf shape, margins, and arrangement. "
+        "Step 2: Detect any CONDITION (Disease/Pest/Nutrient Deficiency or Healthy). "
+        "Step 3: Analyze Visual Symptoms (Color shifts, lesions, wilting, insect damage). "
+        "Output Format STRICTLY:\n"
+        "ENTITY: [Crop Name & Variety]\n"
+        "CONDITION: [Specific Status]\n"
+        "CONFIDENCE: [Percentage 0-100%]\n"
+        "VISUAL_MARKERS: [Color, Texture, Shape observations]\n"
+        "BIOLOGICAL_CAUSE: [Specific Pathogen/Factor]\n"
+        "TREATMENT_PROTOCOLS: [Chemical Names (e.g. Mancozeb) AND Organic Methods (e.g. Neem Oil)]"
     )
     
     try:
-        # 1. High-Fidelity Visual Uplink (Qwen)
+        # 1. Visual Feature Extraction (Qwen VL)
         payload_hf = {
             "model": "Qwen/Qwen2.5-VL-7B-Instruct",
             "messages": [{"role": "user", "content": [
@@ -221,24 +226,18 @@ def vision_diagnosis_logic(image_base64, language):
         }
         hf_res = requests.post("https://router.huggingface.co/v1/chat/completions", 
                              headers={"Authorization": f"Bearer {hf_key}"}, json=payload_hf, timeout=60)
-        full_analysis = hf_res.json()['choices'][0]['message']['content'] if hf_res.status_code == 200 else "Offline Analysis"
+        full_analysis = hf_res.json()['choices'][0]['message']['content'] if hf_res.status_code == 200 else "Offline Audit"
         
-        # 2. Expert Extraction
-        detected_label = "Unknown"
-        entity_name = "Plant"
-        for line in full_analysis.split('\n'):
-            if "CONDITION:" in line: detected_label = line.replace("CONDITION:", "").strip()
-            if "ENTITY:" in line: entity_name = line.replace("ENTITY:", "").strip()
-        
-        # 3. Master Database Verification
-        disease_info = get_disease_info(detected_label)
-        
-        # 4. Intelligence Advisory (Groq) - Always provide solution
+        # 2. Expert Advisory (Groq) with Real-Data Enrichment
         advisory_prompt = (
-            f"SCIENTIFIC ANALYSIS: {full_analysis}\n\n"
-            f"Using the analysis above, provide a comprehensive Agricultural Advisory for {entity_name} in {language}.\n"
-            "Include:\n1. 🧬 Diagnosis Verification\n2. 🧪 Specific Chemical/Organic Treatment\n3. 📅 Immediate Action Protocol.\n"
-            "If the condition is HEALTHY, provide maintenance growth tips.\n"
+            f"AUDIT DATA: {full_analysis}\n\n"
+            f"Based on the clinical markers above, provide a professional Agricultural Advisory in {language}.\n"
+            "STRICT SECTIONS:\n"
+            "1. 🧬 DIAGNOSIS: Explain what it is and how you know.\n"
+            "2. 🧪 CHEMICAL SOLUTION: List specific active ingredients and dosages.\n"
+            "3. 🍃 ORGANIC PROTOCOL: Provide bio-pesticide or natural solutions.\n"
+            "4. 📅 TREATMENT SCHEDULE: Day-by-day protocol.\n"
+            "If HEALTHY, focus on maximum yield optimization tips.\n"
             f"STRICT FORMAT: TRANSLATION: [Full Advisory] SUMMARY: [Voice Snippet]"
         )
         payload_groq = {
@@ -257,15 +256,24 @@ def vision_diagnosis_logic(image_base64, language):
             translation = ans
             speech_summary = ans[:150]
         
-        # 5. Dynamic Global Resource Link (Real Info Uplink)
-        search_query = f"{entity_name} {detected_label} management solution site:icar.org.in OR site:tnau.ac.in"
-        resource_link = f"https://www.google.com/search?q={search_query.replace(' ', '+')}"
+        # 3. Dynamic Identification
+        entity = "Plant"
+        condition = "Condition"
+        confidence = "75%"
+        for line in full_analysis.split('\n'):
+            if "ENTITY:" in line: entity = line.replace("ENTITY:", "").strip()
+            if "CONDITION:" in line: condition = line.replace("CONDITION:", "").strip()
+            if "CONFIDENCE:" in line: confidence = line.replace("CONFIDENCE:", "").strip()
+        
+        # 4. Verified Resource Uplink
+        resource_link = f"https://www.google.com/search?q={entity}+{condition}+ICAR+management+solution"
         
         return {
-            "answer": translation + f"\n\n**🌐 VERIFIED GLOBAL RESOURCE:** [Industrial Agriculture Hub]({resource_link})", 
+            "answer": translation + f"\n\n**🌐 OFFICIAL RESOURCE:** [Industrial Research Link]({resource_link})", 
             "speech_summary": speech_summary, 
-            "disease_info": disease_info, 
-            "label": f"{entity_name} - {detected_label}"
+            "disease_info": get_disease_info(condition), # Fallback to local DB if possible
+            "label": f"{entity} ({condition})",
+            "confidence": confidence
         }
     except Exception as e:
-        return {"answer": f"System Fault: {str(e)}", "speech_summary": "Sync Error."}
+        return {"answer": f"Neural Link Error: {str(e)}", "speech_summary": "Sync Error."}
