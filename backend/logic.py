@@ -5,6 +5,8 @@ import base64
 import random
 import datetime
 import logging
+from geopy.geocoders import Nominatim
+from geopy.exc import GeopyError
 from disease_database import get_disease_info
 
 # --- CONFIG ---
@@ -39,6 +41,23 @@ def get_real_weather(city="Coimbatore", country_code="IN"):
                 "data_source": "LIVE"
             }
     except: pass
+    return None
+
+def reverse_geocode(lat, lon):
+    """Converts coordinates to human-readable location data."""
+    try:
+        geolocator = Nominatim(user_agent="agrivision_ai")
+        location = geolocator.reverse((lat, lon), language='en')
+        if location:
+            addr = location.raw.get('address', {})
+            return {
+                "place": addr.get('village') or addr.get('suburb') or addr.get('town') or addr.get('city') or "Unknown",
+                "state": addr.get('state', "Unknown"),
+                "country": addr.get('country', "Unknown"),
+                "display_name": location.address
+            }
+    except GeopyError:
+        pass
     return None
 
 def get_real_commodity_prices():
@@ -137,38 +156,93 @@ def predict_crop_logic(data):
     return {"scores": scores, "recommendation": best_crop, "suitability": scores[best_crop]}
 
 def get_geographic_intelligence_logic(data):
-    place = data.get("place", "Unknown").lower()
-    soil_type = data.get("soil_type", "Unknown")
-    variance = data.get("variance", 1.0)
+    place = data.get("place", "Unknown")
+    state = data.get("state", "Unknown")
+    country = data.get("country", "India")
+    lat = data.get("lat")
+    lon = data.get("lon")
     
-    local_intel = "Real-time predictive analysis based on regional climate, soil taxonomy, and ICAR agricultural standards."
+    # If coordinates are provided, perform reverse geocoding
+    if lat and lon:
+        geo_data = reverse_geocode(lat, lon)
+        if geo_data:
+            place = geo_data["place"]
+            state = geo_data["state"]
+            country = geo_data["country"]
+
+    soil_type = data.get("soil_type", "Unknown")
+    language = data.get("language", "English")
+    
+    # 1. Check Local Knowledge Base
+    local_intel = ""
     place_key = place.lower().strip()
     if place_key in REGIONAL_KNOWLEDGE:
-        local_intel = REGIONAL_KNOWLEDGE[place_key]
-    else:
+        local_intel = f"**BUREAU DATA:** {REGIONAL_KNOWLEDGE[place_key]}\n\n"
+    
+    # 2. AI POWERED REAL-DATA INFERENCE
+    key = get_groq_key()
+    intelligence_report = ""
+    
+    if key:
+        prompt = (
+            f"Role: Senior Agricultural Scientist (ICAR/FAO Expert).\n"
+            f"Location: {place}, {state}, {country}. Lat/Lon: {lat},{lon}.\n"
+            f"Task: Provide a high-fidelity GEOGRAPHIC INTELLIGENCE REPORT for this land.\n"
+            f"STRICT SECTIONS (Respond in {language}):\n"
+            "1. 🌍 TOPOGRAPHY & CLIMATE: Describe the terrain and current seasonal climate.\n"
+            "2. 🧪 SOIL TAXONOMY: Identify the likely soil profile (e.g., Chromic Luvisols, Black Cotton Soil, etc.).\n"
+            "3. 🌾 CROP SUITABILITY: Factual list of crops currently being harvested or sown in this village right now.\n"
+            "4. 💧 HYDROLIGAL OUTLOOK: Best irrigation practices for this land.\n"
+            "5. 📉 MARKET PULSE: Major local markets and staple crop price trends (estimated).\n"
+            "USE PROFESSIONAL, SCIENTIFIC TONE. DO NOT HALLUCINATE. Use regional facts for Andhra Pradesh/Nellore if applicable."
+        )
+        
+        payload = {
+            "model": "llama-3.1-8b-instant",
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": 0.1
+        }
+        
+        try:
+            res = requests.post("https://api.groq.com/openai/v1/chat/completions", 
+                              json=payload, headers={"Authorization": f"Bearer {key}"}, timeout=20)
+            if res.status_code == 200:
+                intelligence_report = res.json()['choices'][0]['message']['content']
+        except:
+            pass
+
+    # Fallback to Wikipedia if AI fails
+    if not intelligence_report:
         try:
             wiki_url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{place.replace(' ', '_')}"
             wiki_res = requests.get(wiki_url, timeout=5)
             if wiki_res.status_code == 200:
-                local_intel = wiki_res.json().get('extract', local_intel)
-        except: pass
+                intelligence_report = wiki_res.json().get('extract', "Real-time analysis unavailable.")
+        except:
+            intelligence_report = "Neural link failed. Manual field audit suggested."
+
+    full_intel = local_intel + intelligence_report
     
+    # 3. Crop Prediction Scores (Sync with the scientific report)
     pred_res = predict_crop_logic(data)
     scores = pred_res["scores"]
-    for crop in scores:
-        scores[crop] = round(scores[crop] * variance, 1)
-        if crop.lower() in local_intel.lower(): scores[crop] = min(98.5, scores[crop] + 25.0)
     
     best_crop = max(scores, key=scores.get)
     summary = (
-        f"🌍 **GEOGRAPHIC INTELLIGENCE: {place.title()}**\n\n"
-        f"**Official Intel:** {local_intel}\n"
-        f"**Recommendation:** {best_crop} ({scores[best_crop]}% suitability)\n\n"
-        + "\n".join([f"- {crop}: {score}%" for crop, score in sorted(scores.items(), key=lambda x: x[1], reverse=True)])
+        f"🌍 **PRECISION GEOGRAPHIC INTELLIGENCE: {place.upper()}**\n\n"
+        f"{full_intel}\n\n"
+        f"**FINAL RECOMMENDATION:** {best_crop} ({scores[best_crop]}% suitability)"
     )
-    speech, _ = translate_and_explain(f"Geo-intel for {place} complete. {best_crop} recommended.", data.get("language", "English"))
     
-    return {"intelligence": summary, "scores": scores, "best_crop": best_crop, "speech_summary": speech}
+    speech, _ = translate_and_explain(f"Geographic logistics for {place} complete. Providing real-time field data.", language)
+    
+    return {
+        "intelligence": summary, 
+        "scores": scores, 
+        "best_crop": best_crop, 
+        "speech_summary": speech,
+        "location_details": {"place": place, "state": state, "country": country}
+    }
 
 def chat_logic(message, language, context_data):
     key = get_groq_key()

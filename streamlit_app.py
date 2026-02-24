@@ -12,6 +12,8 @@ from io import BytesIO
 from gtts import gTTS
 from fpdf import FPDF
 from dotenv import load_dotenv
+import folium
+from streamlit_folium import st_folium
 
 # --- CONFIG & PATHS ---
 load_dotenv(os.path.join(os.path.dirname(__file__), "backend", ".env"))
@@ -325,24 +327,66 @@ with st.sidebar:
     lang = st.selectbox("Select Tactical Language", ["English", "Hindi", "Tamil", "Telugu", "Urdu", "Malayalam"], label_visibility="collapsed")
     
     st.markdown('<div class="sidebar-section-label">Geographic Logistics</div>', unsafe_allow_html=True)
-    country = st.text_input("Country", "India", label_visibility="collapsed", placeholder="Country")
-    state = st.text_input("State", "Tamil Nadu", label_visibility="collapsed", placeholder="State")
-    place = st.text_input("Place", "Coimbatore", label_visibility="collapsed", placeholder="Place")
+    
+    # --- INTERACTIVE MAP (V29.0) ---
+    st.caption("Click on the map to select mission coordinates")
+    m = folium.Map(location=[20.5937, 78.9629], zoom_start=4) # India Centered
+    map_data = st_folium(m, height=250, width=None, key="geo_map")
+    
+    # Auto-fill logic from map click
+    if map_data and map_data.get("last_clicked"):
+        lat = map_data["last_clicked"]["lat"]
+        lon = map_data["last_clicked"]["lng"]
+        st.session_state.map_coords = (lat, lon)
+        
+        # Immediate background reverse geocode check for UI feedback
+        with st.spinner("Decoding Coordinates..."):
+            try:
+                from backend import logic
+                geo = logic.reverse_geocode(lat, lon)
+                if geo:
+                    st.session_state.place_val = geo["place"]
+                    st.session_state.state_val = geo["state"]
+                    st.session_state.country_val = geo["country"]
+            except:
+                pass
+
+    if 'place_val' not in st.session_state: st.session_state.place_val = "Coimbatore"
+    if 'state_val' not in st.session_state: st.session_state.state_val = "Tamil Nadu"
+    if 'country_val' not in st.session_state: st.session_state.country_val = "India"
+
+    country = st.text_input("Country", st.session_state.country_val, label_visibility="collapsed", placeholder="Country")
+    state = st.text_input("State", st.session_state.state_val, label_visibility="collapsed", placeholder="State")
+    place = st.text_input("Place", st.session_state.place_val, label_visibility="collapsed", placeholder="Place")
     
     soil = st.selectbox("Soil Profile", ["Alluvial", "Black", "Red", "Sandy", "Clay", "Loamy"], label_visibility="collapsed")
-    season = st.selectbox("Season", ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], index=7, label_visibility="collapsed")
+    season = st.selectbox("Season", ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], index=datetime.datetime.now().month-1, label_visibility="collapsed")
     
     if st.button("🌍 ANALYZE LOCATION", use_container_width=True):
         with st.spinner("Establishing Scientific Web Uplink..."):
-            res = call_backend("geographic-intelligence", payload={
+            lat_lon = st.session_state.get('map_coords')
+            payload = {
                 "place": place, "state": state, "country": country, 
                 "soil_type": soil, "season": season, "language": lang
-            })
+            }
+            if lat_lon:
+                payload["lat"] = lat_lon[0]
+                payload["lon"] = lat_lon[1]
+
+            res = call_backend("geographic-intelligence", payload=payload)
             if res:
                 intel = res.get('intelligence', "")
+                loc = res.get('location_details', {})
+                
+                # Update inputs if backend returned geocoded details
+                if loc:
+                    st.session_state.place_val = loc.get("place", place)
+                    st.session_state.state_val = loc.get("state", state)
+                    st.session_state.country_val = loc.get("country", country)
+                
                 # Store location context
                 st.session_state.location_context = {
-                    "place": place, "state": state, "country": country,
+                    "place": st.session_state.place_val, "state": st.session_state.state_val, "country": st.session_state.country_val,
                     "soil": soil, "season": season, "analysis": intel
                 }
                 st.session_state.intel = intel
@@ -354,7 +398,8 @@ with st.sidebar:
                 # V28.2: SYNC TO CHAT
                 st.session_state.chat_history.append({"role": "assistant", "content": intel})
                 
-                st.success(f"✓ Location Context Set: {place}, {state}")
+                st.success(f"✓ Precision Location Set: {st.session_state.place_val}")
+                st.rerun()
 
     st.markdown('<div class="sidebar-section-label">Bio-Scan Uplink</div>', unsafe_allow_html=True)
     
