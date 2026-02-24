@@ -579,34 +579,34 @@ with col_viz:
 
     with tabs[2]:
         if st.session_state.audit:
-        audit_data = st.session_state.audit
-        db = audit_data.get('db', {})
-        st.markdown(f'''
-        <div class="audit-panel" style="border-top-color: #ff4d4d; margin-bottom: 20px;">
-            <div class="audit-title" style="color: #ff4d4d;">🚀 BIO-SCAN DIAGNOSIS: {audit_data.get('label', 'Unknown')}</div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">
-                <div>
-                    <p><b>VITALITY INDEX:</b> {audit_data.get('vitality', 'N/A')}%</p>
-                    <p><b>AI CONFIDENCE:</b> <span style="color: #00f07f;">{audit_data.get('confidence', '85%')}</span></p>
-                    <p><b>SEVERITY:</b> <span style="color: {'#ff4d4d' if db.get('severity') == 'High' else '#ffa500'};">{db.get('severity', 'N/A')}</span></p>
+            audit_data = st.session_state.audit
+            db = audit_data.get('db', {})
+            st.markdown(f'''
+            <div class="audit-panel" style="border-top-color: #ff4d4d; margin-bottom: 20px;">
+                <div class="audit-title" style="color: #ff4d4d;">🚀 BIO-SCAN DIAGNOSIS: {audit_data.get('label', 'Unknown')}</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">
+                    <div>
+                        <p><b>VITALITY INDEX:</b> {audit_data.get('vitality', 'N/A')}%</p>
+                        <p><b>AI CONFIDENCE:</b> <span style="color: #00f07f;">{audit_data.get('confidence', '85%')}</span></p>
+                        <p><b>SEVERITY:</b> <span style="color: {'#ff4d4d' if db.get('severity') == 'High' else '#ffa500'};">{db.get('severity', 'N/A')}</span></p>
+                    </div>
+                    <div>
+                        <p><b>SYMPTOMS DETECTED:</b><br>{", ".join(db.get('symptoms', ['Visual markers identified by AI']))}</p>
+                    </div>
                 </div>
-                <div>
-                    <p><b>SYMPTOMS DETECTED:</b><br>{", ".join(db.get('symptoms', ['Visual markers identified by AI']))}</p>
+                <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #30363d;">
+                    <b style="color: #00f07f;">INDUSTRIAL TREATMENT PROTOCOL:</b><br>
+                    <div style="font-size: 13px; margin-top: 5px;">
+                        {", ".join([f.get('name') for f in db.get('fungicides', [])]) if db.get('fungicides') else 'Monitoring suggested.'}
+                    </div>
                 </div>
             </div>
-            <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #30363d;">
-                <b style="color: #00f07f;">INDUSTRIAL TREATMENT PROTOCOL:</b><br>
-                <div style="font-size: 13px; margin-top: 5px;">
-                    {", ".join([f.get('name') for f in db.get('fungicides', [])]) if db.get('fungicides') else 'Monitoring suggested.'}
-                </div>
-            </div>
-        </div>
-        ''', unsafe_allow_html=True)
-        
-        if db.get('treatment_schedule'):
-            with st.expander("📅 VIEW DETAILED TREATMENT SCHEDULE"):
-                for day, action in db.get('treatment_schedule', {}).items():
-                    st.markdown(f"**{day}**: {action}")
+            ''', unsafe_allow_html=True)
+            
+            if db.get('treatment_schedule'):
+                with st.expander("📅 VIEW DETAILED TREATMENT SCHEDULE"):
+                    for day, action in db.get('treatment_schedule', {}).items():
+                        st.markdown(f"**{day}**: {action}")
 
     # 1. Telemetry Matrix
     st.markdown('<div class="sidebar-section-label">Real-Time Telemetry Matrix</div>', unsafe_allow_html=True)
