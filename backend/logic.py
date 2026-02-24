@@ -574,6 +574,18 @@ def vision_diagnosis_logic(image_base64, language):
                 "preventive_measures": ["Improve air circulation", "Monitor humidity levels"],
                 "treatment_schedule": {"Day 1": "Apply protective spray", "Day 7": "Re-evaluate spread"},
                 "safety_precautions": ["Use standard PPE"],
+                "products": [
+                    {
+                        "name": "Broad Spectrum Bio-Pesticide",
+                        "image": "https://img.icons8.com/wired/256/pesticide.png",
+                        "dosage_info": "General dosage: 2ml per 1L water. Apply as foliar spray.",
+                        "vendors": [
+                            {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=bio+pesticide"},
+                            {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=bio+pesticide"},
+                            {"company": "Amazon", "link": "https://www.amazon.in/s?k=bio+pesticide+for+plants"}
+                        ]
+                    }
+                ],
                 "recovery_timeline": "10-14 days"
             }
 

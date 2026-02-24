@@ -200,14 +200,23 @@ DISEASE_TREATMENTS = {
         "treatment_schedule": {
             "Day 1": "Initial fungicide application",
             "Day 7": "Second application",
-            "Day 14": "Third application",
-            "Day 21": "Assessment and final treatment if needed"
-        },
         "safety_precautions": [
             "Use protective clothing and gloves",
-            "Avoid spraying in hot sun",
-            "Keep away from water sources",
-            "Maintain 7-10 day pre-harvest interval"
+            "Maintain proper plant spacing",
+            "Avoid overhead irrigation",
+            "Sanitize tools regularly"
+        ],
+        "products": [
+            {
+                "name": "Mancozeb 75% WP",
+                "image": "https://img.icons8.com/wired/256/pesticide.png",
+                "dosage_info": "Quantity: 600g per 200L water (1 Acre). Method: Foliar spray every 7-10 days.",
+                "vendors": [
+                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Mancozeb"},
+                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Mancozeb"},
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Mancozeb+pesticide"}
+                ]
+            }
         ],
         "recovery_timeline": "14-21 days with proper management"
     },
@@ -466,6 +475,18 @@ DISEASE_TREATMENTS = {
             "Avoid deep tillage",
             "Test water source regularly",
             "Monitor soil health index"
+        ],
+        "products": [
+            {
+                "name": "Mancozeb 75% WP",
+                "image": "https://img.icons8.com/wired/256/pesticide.png",
+                "dosage_info": "Quantity: 600-800g per 200L water (1 Acre). Method: Foliar spray at 7-10 day intervals.",
+                "vendors": [
+                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Mancozeb"},
+                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Mancozeb"},
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Mancozeb+75+WP"}
+                ]
+            }
         ],
         "recovery_timeline": "6-12 months for significant improvement"
     },
@@ -900,12 +921,36 @@ DISEASE_TREATMENTS = {
             "Day 10": "Second application if wet weather persists",
             "Day 21": "Final spray before harvest (check PHI)"
         },
-        "safety_precautions": [
-            "Maintain a 7-day pre-harvest interval (PHI)",
-            "Do not apply more than 3 times per season",
-            "Work with the wind to avoid spray drift"
-        ],
         "recovery_timeline": "Stops spread within 7-10 days; focus on protecting healthy fruit"
+    },
+    "Healthy": {
+        "severity": "None (Optimum)",
+        "symptoms": ["Vibrant green leaves", "Robust stem structure", "Normal growth patterns"],
+        "causes": ["Excellent soil nutrition", "Proper irrigation", "Effective pest management"],
+        "preventive_measures": [
+            "Continue regular monitoring",
+            "Maintain balanced fertilization",
+            "Follow seasonal crop rotation"
+        ],
+        "treatment_schedule": {
+            "Day 1-30": "Routine maintenance and vigor monitoring"
+        },
+        "safety_precautions": [
+            "Continue standard safety protocols during maintenance"
+        ],
+        "products": [
+            {
+                "name": "Organic Seaweed Extract (Vigor Booster)",
+                "image": "https://img.icons8.com/wired/256/biotech.png",
+                "dosage_info": "Quantity: 500ml per 200L water. Method: Foliar spray for maximum yield.",
+                "vendors": [
+                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=seaweed+extract"},
+                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=seaweed+extract"},
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=organic+fertilizer"}
+                ]
+            }
+        ],
+        "recovery_timeline": "Not applicable (Crop is at peak health)"
     }
 }
 
