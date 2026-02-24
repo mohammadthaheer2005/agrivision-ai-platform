@@ -542,7 +542,7 @@ with col_viz:
     tabs = st.tabs(["🛰️ SATELLITE MAP", "🌍 FIELD INTEL", "🧬 BIO-SCAN"])
     
     with tabs[0]:
-        st.markdown('<div class="sidebar-section-label" style="margin-top:0">LIVE GEOGRAPHIC SATELLITE</div>', unsafe_allow_html=True)
+        st.markdown('<div class="sidebar-section-label" style="margin-top:0">🛰️ MULTISPECTRAL SATELLITE ARRAY</div>', unsafe_allow_html=True)
         # Larger map in main area
         m = folium.Map(location=st.session_state.map_center, zoom_start=st.session_state.map_zoom)
         if st.session_state.map_coords:
@@ -609,6 +609,37 @@ with col_viz:
                 with st.expander("📅 VIEW DETAILED TREATMENT SCHEDULE"):
                     for day, action in db.get('treatment_schedule', {}).items():
                         st.markdown(f"**{day}**: {action}")
+
+    # --- NEW TREATMENT MARKETPLACE TAB (V30.1) ---
+    marketplace_tab = st.tabs(["🛒 TREATMENT MARKETPLACE"])
+    with marketplace_tab[0]:
+        if st.session_state.audit:
+            db = st.session_state.audit.get('db', {})
+            products = db.get('products', [])
+            
+            if products:
+                st.markdown('<div class="sidebar-section-label" style="margin-top:0">COMMERCIAL TREATMENT OPTIONS</div>', unsafe_allow_html=True)
+                for prod in products:
+                    with st.container():
+                        st.markdown(f"""
+                        <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid #30363d; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                            <div style="display: flex; align-items: start; gap: 15px;">
+                                <img src="{prod.get('image')}" width="80" style="border-radius: 4px; background: white;">
+                                <div style="flex: 1;">
+                                    <h4 style="margin: 0; color: #00f07f;">{prod.get('name')}</h4>
+                                    <p style="font-size: 13px; color: #8b949e; margin: 5px 0;">{prod.get('dosage_info')}</p>
+                                </div>
+                            </div>
+                            <div style="margin-top: 15px; border-top: 1px solid #30363d; padding-top: 10px;">
+                                <p style="font-size: 12px; font-weight: bold; margin-bottom: 8px; color: #00d1ff;">PURCHASE FROM AUTHORIZED VENDORS:</p>
+                                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                    {" ".join([f'<a href="{v["link"]}" target="_blank" style="text-decoration: none; background: #238636; color: white; padding: 5px 12px; border-radius: 4px; font-size: 12px; font-weight: bold;">🛍️ {v["company"]}</a>' for v in prod.get('vendors', [])])}
+                                </div>
+                            </div>
+                        </div>
+                        """, unsafe_allow_html=True)
+            else:
+                st.info("No commercial product listings available for this diagnosis yet. Please check back soon.")
 
     # 1. Telemetry Matrix
     st.markdown('<div class="sidebar-section-label">Real-Time Telemetry Matrix</div>', unsafe_allow_html=True)

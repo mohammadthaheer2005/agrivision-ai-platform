@@ -59,6 +59,28 @@ DISEASE_TREATMENTS = {
             "Do not spray during flowering to protect pollinators",
             "Maintain 7-day pre-harvest interval"
         ],
+        "products": [
+            {
+                "name": "Sulfur 80% WP (Wettable Powder)",
+                "image": "https://img.icons8.com/wired/256/pesticide.png",
+                "dosage_info": "Quantity: 500g per 200L water (1 Acre). Method: Foliar spray covering both leaf surfaces.",
+                "vendors": [
+                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Sulfur+80"},
+                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Sulfur+80"},
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Sulfur+pesticide"}
+                ]
+            },
+            {
+                "name": "Azoxystrobin 23% SC",
+                "image": "https://img.icons8.com/wired/256/biotech.png",
+                "dosage_info": "Quantity: 200ml per 200L water (1 Acre). Method: High-volume spray at first sign of infection.",
+                "vendors": [
+                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Amistar"},
+                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Azoxystrobin"},
+                    {"company": "Google Shopping", "link": "https://www.google.com/search?q=Azoxystrobin+23+SC+price&tbm=shop"}
+                ]
+            }
+        ],
         "recovery_timeline": "14-21 days for complete recovery with proper treatment"
     },
     
@@ -116,6 +138,18 @@ DISEASE_TREATMENTS = {
             "Avoid contact with skin and eyes",
             "Do not apply before rain",
             "Maintain 14-day pre-harvest interval for Metalaxyl"
+        ],
+        "products": [
+            {
+                "name": "Metalaxyl 8% + Mancozeb 64% WP",
+                "image": "https://img.icons8.com/wired/256/pesticide.png",
+                "dosage_info": "Quantity: 500g per 200L water (1 Acre). Method: Foliar spray every 10-12 days.",
+                "vendors": [
+                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Ridomil+Gold"},
+                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Metalaxyl+Mancozeb"},
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Metalaxyl+pesticide"}
+                ]
+            }
         ],
         "recovery_timeline": "21-28 days with consistent treatment"
     },
@@ -913,5 +947,6 @@ def get_disease_info(disease_name):
         "preventive_measures": ["Practice good agricultural hygiene"],
         "treatment_schedule": {},
         "safety_precautions": ["Always wear protective equipment"],
+        "products": [],
         "recovery_timeline": "Consult expert for timeline"
     }

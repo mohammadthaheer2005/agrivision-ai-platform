@@ -207,9 +207,10 @@ def get_geographic_intelligence_logic(data):
             "1. 🌍 TOPOGRAPHY & CLIMATE: Describe the terrain and current seasonal climate.\n"
             "2. 🧪 SOIL TAXONOMY: Identify the likely soil profile (e.g., Chromic Luvisols, Black Cotton Soil, etc.).\n"
             "3. 🌾 CROP SUITABILITY: Factual list of crops currently being harvested or sown in this village right now.\n"
-            "4. 💧 HYDROLIGAL OUTLOOK: Best irrigation practices for this land.\n"
-            "5. 📉 MARKET PULSE: Major local markets and staple crop price trends (estimated).\n"
-            "USE PROFESSIONAL, SCIENTIFIC TONE. DO NOT HALLUCINATE. Use regional facts for Andhra Pradesh/Nellore if applicable."
+            "4. 🏭 INDUSTRIAL PROXIMITY: Identify nearby processing units (Rice Mills, Sugar Factories, Cold Storage, or Food Parks) for this region.\n"
+            "5. 💧 HYDROLIGAL OUTLOOK: Best irrigation practices for this land.\n"
+            "6. 📉 MARKET PULSE: Major local markets and staple crop price trends (estimated).\n"
+            "USE PROFESSIONAL, SCIENTIFIC TONE. DO NOT HALLUCINATE. Cite specific local factories if known for this district."
         )
         
         payload = {
