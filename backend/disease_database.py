@@ -200,6 +200,9 @@ DISEASE_TREATMENTS = {
         "treatment_schedule": {
             "Day 1": "Initial fungicide application",
             "Day 7": "Second application",
+            "Day 14": "Third application",
+            "Day 21": "Assessment and final monitoring"
+        },
         "safety_precautions": [
             "Use protective clothing and gloves",
             "Maintain proper plant spacing",
