@@ -168,14 +168,32 @@ class EliteAgriReportV14:
                     pdf.ln(2)
                 
                 # Safety Precautions
-                if disease_info.get("safety_precautions"):
-                    pdf.set_font(font_main, 'B', 10)
-                    pdf.set_text_color(153, 0, 0)
-                    safe_cell(0, 7, "SAFETY PRECAUTIONS:", ln=True)
-                    pdf.set_font(font_main, size=8)
-                    pdf.set_text_color(0, 0, 0)
                     for precaution in disease_info.get("safety_precautions", [])[:4]:
                         pdf.cell(10); safe_cell(0, 5, f"- {precaution}", ln=True)
+                
+                # V32.0: Recommended Commercial Products (Amazon)
+                if disease_info.get("products"):
+                    pdf.ln(3)
+                    pdf.set_font(font_main, 'B', 10)
+                    pdf.set_text_color(255, 102, 0) # Amazon Orange
+                    safe_cell(0, 7, "RECOMMENDED COMMERCIAL PRODUCTS (AMAZON):", ln=True)
+                    pdf.set_font(font_main, size=9)
+                    pdf.set_text_color(0, 0, 0)
+                    for prod in disease_info.get("products")[:2]:
+                        p_name = prod.get('name', 'N/A')
+                        p_dosage = prod.get('dosage_info', 'N/A')
+                        pdf.set_font(font_main, 'B', 9)
+                        pdf.cell(10); safe_cell(0, 6, f"Product: {p_name}", ln=True)
+                        pdf.set_font(font_main, size=8)
+                        pdf.cell(15); safe_multi_cell(165, 5, f"Instruction: {p_dosage}")
+                        for vendor in prod.get('vendors', []):
+                            if vendor.get('company', '').lower() == 'amazon':
+                                pdf.cell(15); pdf.set_text_color(0, 51, 153)
+                                # Clean link for FPDF
+                                clean_link = vendor.get('link', '').replace(' ', '%20')
+                                safe_cell(0, 5, "Order on Amazon: Click to View Product", ln=True, link=clean_link)
+                                pdf.set_text_color(0, 0, 0)
+                        pdf.ln(1)
             
             pdf.ln(5)
 

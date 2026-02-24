@@ -63,9 +63,9 @@ DISEASE_TREATMENTS = {
             {
                 "name": "Sulphex (Sulfur 80% WP)",
                 "image": "https://m.media-amazon.com/images/I/61j6GvS6XNL._SL1000_.jpg",
-                "dosage_info": "Usage: 2g/L water. High performance control for Powdery Mildew and Mites.",
+                "dosage_info": "Usage: Mix 2g/L water. Apply as foliar spray during early morning or late evening. Why: Sulfur is a powerful contact fungicide that disrupts fungal cell energy production.",
                 "vendors": [
-                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Sulfur+80+WP+Fungicide"}
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Sulphur+80+WP+Fungicide+Sulphex"}
                 ]
             }
         ],
@@ -131,9 +131,9 @@ DISEASE_TREATMENTS = {
             {
                 "name": "Ridomil Gold (Metalaxyl + Mancozeb)",
                 "image": "https://m.media-amazon.com/images/I/61Rov3zPslL._SL1100_.jpg",
-                "dosage_info": "Usage: 2.5g/L water. Industry standard for Downy Mildew and Blight.",
+                "dosage_info": "Usage: 2.5g/L water. Ensure complete coverage of leaf undersides. Why: Syngenta's Metalaxyl provides internal systemic protection while Mancozeb creates a protective external barrier.",
                 "vendors": [
-                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Ridomil+Gold+Fungicide"}
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Ridomil+Gold+Fungicide+Syngenta"}
                 ]
             }
         ],
@@ -170,11 +170,11 @@ DISEASE_TREATMENTS = {
         "safety_precautions": ["Wear gloves", "Maintain 10-day PHI"],
         "products": [
             {
-                "name": "Tata Saaf (Carbendazim + Mancozeb)",
+                "name": "UPL Saaf (Carbendazim + Mancozeb)",
                 "image": "https://m.media-amazon.com/images/I/71OnzEwU-oL._SL1500_.jpg",
-                "dosage_info": "Usage: 2g/L water. Multi-purpose systemic and contact protection.",
+                "dosage_info": "Usage: 2g/L water. Apply every 12-15 days during disease pressure. Why: Saaf combines systemic carbendazim for internal cure and contact mancozeb for preventing new infections.",
                 "vendors": [
-                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Tata+Saaf+Fungicide"}
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=UPL+Saaf+Fungicide+250g"}
                 ]
             }
         ],
@@ -210,11 +210,11 @@ DISEASE_TREATMENTS = {
         "safety_precautions": ["Full PPE required", "14-day PHI for Metalaxyl"],
         "products": [
             {
-                "name": "Ridomil Gold (Curative Systemic)",
+                "name": "Syngenta Ridomil Gold (Curative)",
                 "image": "https://m.media-amazon.com/images/I/61Rov3zPslL._SL1100_.jpg",
-                "dosage_info": "Usage: 2.5g/L water. Critical for stopping Late Blight epidemic.",
+                "dosage_info": "Usage: 2.5g/L water. Repeat every 10 days for severely infected fields. Why: Rapidly absorbed by plants to stop moving blight spores instantly.",
                 "vendors": [
-                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Ridomil+Gold"}
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Ridomil+Gold+100g"}
                 ]
             }
         ],
@@ -250,11 +250,11 @@ DISEASE_TREATMENTS = {
         "safety_precautions": ["Avoid skin contact", "Keep livestock away from fields"],
         "products": [
             {
-                "name": "Beam (Tricyclazole 75% WP)",
-                "image": "https://m.media-amazon.com/images/I/41K-vN-iT-L.jpg",
-                "dosage_info": "Usage: 0.6g/L water. Specialized for Rice Blast control.",
+                "name": "Bavistin (Carbendazim 50% WP)",
+                "image": "https://m.media-amazon.com/images/I/61v4FmU70AL._SL1000_.jpg",
+                "dosage_info": "Usage: 1g/L water for soil drenching and spray. Why: Systemic action specifically targets root-borne fungal pathogens causing rot.",
                 "vendors": [
-                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Tricyclazole+Fungicide"}
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Bavistin+Fungicide+Crystal"}
                 ]
             }
         ],
@@ -518,13 +518,11 @@ DISEASE_TREATMENTS = {
         ],
         "products": [
             {
-                "name": "Mancozeb 75% WP",
-                "image": "https://img.icons8.com/wired/256/pesticide.png",
-                "dosage_info": "Quantity: 600-800g per 200L water (1 Acre). Method: Foliar spray at 7-10 day intervals.",
+                "name": "Agriculture Gypsum (Soil Reclaimer)",
+                "image": "https://m.media-amazon.com/images/I/61Nl-W92GkL._SL1100_.jpg",
+                "dosage_info": "Usage: 500kg-1000kg per acre depending on EC levels. Why: Gypsum displaces sodium with calcium, improving soil structure and drainage.",
                 "vendors": [
-                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Mancozeb"},
-                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Mancozeb"},
-                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Mancozeb+75+WP"}
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Agriculture+Gypsum+Fertilizer"}
                 ]
             }
         ],
@@ -550,42 +548,31 @@ DISEASE_TREATMENTS = {
                 "name": "Tricyclazole 75% WP",
                 "active_ingredient": "Tricyclazole",
                 "dosage": "0.6 g/L water",
-                "application": "Foliar spray at first sign of lesions, repeat after 15 days",
-                "brands": ["Beam", "Civic", "Baan"]
-            },
-            {
-                "name": "Isoprothiolane 40% EC",
-                "active_ingredient": "Isoprothiolane",
-                "dosage": "1.5 ml/L water",
-                "application": "Apply at boot leaf stage to prevent neck blast",
-                "brands": ["Fujione", "Isopro"]
-            },
-            {
-                "name": "Carbendazim 50% WP",
-                "active_ingredient": "Carbendazim",
-                "dosage": "1 g/L water",
-                "application": "Used for seed treatment and foliar spray",
-                "brands": ["Bavistin", "Indofil"]
+                "application": "Foliar spray at first sign of lesions",
+                "brands": ["Beam", "Civic"]
             }
         ],
         "preventive_measures": [
-            "Use resistant varieties (e.g., IR-64, Swarna)",
-            "Avoid high nitrogen doses, split nitrogen application",
-            "Burn infected stubble post-harvest",
-            "Maintain proper water level in the field"
+            "Use resistant varieties",
+            "Avoid high nitrogen doses",
+            "Burn infected stubble"
         ],
         "treatment_schedule": {
-            "Seed stage": "Treat seeds with Carbendazim (2g/kg)",
-            "Nursery": "Spray Tricyclazole if spots appear",
-            "Tillering": "Monitor and spray if 2-5% leaf area is infected",
-            "Heading": "Mandatory neck blast prevention spray"
+            "Day 1": "Spray Tricyclazole",
+            "Day 15": "Repeat spray if needed"
         },
-        "safety_precautions": [
-            "Follow 15-day pre-harvest interval",
-            "Wear protective masks during spraying",
-            "Avoid spraying during high winds"
-        ],
-        "recovery_timeline": "14-25 days; Neck blast causes irreversible yield loss"
+        "safety_precautions": ["15-day PHI", "Wear mask"],
+        "recovery_timeline": "14-25 days",
+        "products": [
+            {
+                "name": "Beam (Tricyclazole 75% WP)",
+                "image": "https://m.media-amazon.com/images/I/41K-vN-iT-L.jpg",
+                "dosage_info": "Usage: 0.6g/L water. Apply at first sign of blast and at heading stage. Why: Tricyclazole is the industry standard for systemic control of blast pathogen in rice/paddy.",
+                "vendors": [
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Beam+Tricyclazole+100g"}
+                ]
+            }
+        ]
     },
 
     "Sugarcane Red Rot": {
@@ -635,7 +622,17 @@ DISEASE_TREATMENTS = {
             "Sterilize farm tools after handling infected canes",
             "Avoid using canal water from infected fields"
         ],
-        "recovery_timeline": "No cure for infected canes; focus on saving healthy plots"
+        "recovery_timeline": "No cure for infected canes; focus on saving healthy plots",
+        "products": [
+            {
+                "name": "Bavistin (Carbendazim 50% WP)",
+                "image": "https://m.media-amazon.com/images/I/61v4FmU70AL._SL1000_.jpg",
+                "dosage_info": "Usage: 1g/L water for sett treatment. Why: Carbendazim is highly effective at killing Colletotrichum spores on seed material.",
+                "vendors": [
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Bavistin+Fungicide+Crystal"}
+                ]
+            }
+        ],
     },
 
     "Micro-Irrigation Fault": {
@@ -980,11 +977,11 @@ DISEASE_TREATMENTS = {
         ],
         "products": [
             {
-                "name": "Organic Seaweed Extract (Vigor Booster)",
+                "name": "N-P-K 19:19:19 (Total Plant Care)",
                 "image": "https://m.media-amazon.com/images/I/61Nl-W92GkL._SL1100_.jpg",
-                "dosage_info": "Usage: 2ml/L water. Natural growth promoter and immunity booster.",
+                "dosage_info": "Usage: 5g/L water for foliar spray. Why: Balanced NPK ensures sustained vigor, flowering, and stress resistance for healthy crops.",
                 "vendors": [
-                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Liquid+Seaweed+Fertilizer"}
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=NPK+19:19:19+Fertilizer+1kg"}
                 ]
             }
         ],

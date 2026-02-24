@@ -491,6 +491,7 @@ async def vision_diagnosis(req: VisionRequest):
             f"OFFICIAL VISION ANALYSIS: {full_analysis}\n\n"
             f"Provide 100% accurate agricultural advisory in {req.language}. "
             "Use a professional, helpful tone. Break down symptoms and management like Google Lens. "
+            "CRITICAL: Explain exactly HOW to use the recommended medicines and WHY they are being recommended for this specific condition. "
             f"STRICT FORMAT: TRANSLATION: [Full Advisory in {req.language}] SUMMARY: [1-sentence summary]"
         )
         payload_groq = {
