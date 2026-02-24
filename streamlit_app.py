@@ -621,22 +621,29 @@ with col_viz:
                 for prod in products:
                     with st.container():
                         st.markdown(f"""
-                        <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid #30363d; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
-                            <div style="display: flex; align-items: start; gap: 15px;">
-                                <img src="{prod.get('image')}" width="80" style="border-radius: 4px; background: white;">
-                                <div style="flex: 1;">
-                                    <h4 style="margin: 0; color: #00f07f;">{prod.get('name')}</h4>
-                                    <p style="font-size: 13px; color: #8b949e; margin: 5px 0;">{prod.get('dosage_info')}</p>
+                        <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid #30363d; border-radius: 12px; padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                            <div style="display: flex; flex-direction: column; gap: 15px;">
+                                <div style="display: flex; align-items: start; gap: 20px;">
+                                    <img src="{prod.get('image')}" width="140" style="border-radius: 8px; background: white; border: 2px solid #00f07f; padding: 5px;">
+                                    <div style="flex: 1;">
+                                        <h3 style="margin: 0; color: #00f07f; font-size: 18px;">{prod.get('name')}</h3>
+                                        <div style="background: rgba(0, 240, 127, 0.1); color: #00f07f; padding: 4px 10px; border-radius: 20px; display: inline-block; font-size: 11px; font-weight: bold; margin-top: 8px;">PREMIUM GRADE</div>
+                                        <p style="font-size: 14px; color: #e6edf3; margin: 12px 0;">{prod.get('dosage_info')}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div style="margin-top: 15px; border-top: 1px solid #30363d; padding-top: 10px;">
-                                <p style="font-size: 12px; font-weight: bold; margin-bottom: 8px; color: #00d1ff;">PURCHASE FROM AUTHORIZED VENDORS:</p>
-                                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                                    {" ".join([f'<a href="{v["link"]}" target="_blank" style="text-decoration: none; background: #238636; color: white; padding: 5px 12px; border-radius: 4px; font-size: 12px; font-weight: bold;">🛍️ {v["company"]}</a>' for v in prod.get('vendors', [])])}
+                                <div style="background: rgba(139, 148, 158, 0.05); border-radius: 8px; padding: 12px; border: 1px dashed #30363d;">
+                                    <p style="font-size: 12px; font-weight: bold; margin-bottom: 10px; color: #00d1ff;">🛒 DIRECT PURCHASE CHANNELS:</p>
+                                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                                        {" ".join([f'<a href="{v["link"]}" target="_blank" style="text-decoration: none; background: #238636; color: white; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: bold; border-bottom: 2px solid #1a6328; transition: 0.2s;">🛍️ {v["company"]}</a>' for v in prod.get('vendors', [])])}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         """, unsafe_allow_html=True)
+                        with st.expander("🔬 VIEW INDUSTRIAL TECHNICAL SPECS"):
+                            st.write(f"**Target Pathology:** {audit_data.get('label')}")
+                            st.write(f"**Application:** Recommended {prod.get('dosage_info').split('.')[0]}")
+                            st.warning("Note: Always refer to the physical product label for final safety instructions.")
             else:
                 st.info("No commercial product listings available for this diagnosis yet.")
         else:

@@ -61,23 +61,23 @@ DISEASE_TREATMENTS = {
         ],
         "products": [
             {
-                "name": "Sulfur 80% WP (Wettable Powder)",
-                "image": "https://img.icons8.com/wired/256/pesticide.png",
-                "dosage_info": "Quantity: 500g per 200L water (1 Acre). Method: Foliar spray covering both leaf surfaces.",
+                "name": "Sulphex (Sulfur 80% WP)",
+                "image": "https://5.imimg.com/data5/SELLER/Default/2021/6/UM/YQ/YF/125368388/sulfur-80-wp-500x500.jpg",
+                "dosage_info": "Quantity: 500g per 1 Acre. Highly effective against Powdery Mildew and Mites.",
                 "vendors": [
-                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Sulfur+80"},
-                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Sulfur+80"},
-                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Sulfur+pesticide"}
+                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Sulphex"},
+                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Sulphex"},
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Sulfur+80+WP"}
                 ]
             },
             {
-                "name": "Azoxystrobin 23% SC",
-                "image": "https://img.icons8.com/wired/256/biotech.png",
-                "dosage_info": "Quantity: 200ml per 200L water (1 Acre). Method: High-volume spray at first sign of infection.",
+                "name": "Amistar (Azoxystrobin 23% SC)",
+                "image": "https://5.imimg.com/data5/SELLER/Default/2023/1/RP/VI/TM/125368388/amistar-fungicide-500x500.jpg",
+                "dosage_info": "Quantity: 200ml per Acre. Broad-spectrum control with energy booster effect.",
                 "vendors": [
                     {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Amistar"},
-                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Azoxystrobin"},
-                    {"company": "Google Shopping", "link": "https://www.google.com/search?q=Azoxystrobin+23+SC+price&tbm=shop"}
+                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Amistar"},
+                    {"company": "Amazon India", "link": "https://www.amazon.in/s?k=Amistar+Syngenta"}
                 ]
             }
         ],
@@ -141,13 +141,13 @@ DISEASE_TREATMENTS = {
         ],
         "products": [
             {
-                "name": "Metalaxyl 8% + Mancozeb 64% WP",
-                "image": "https://img.icons8.com/wired/256/pesticide.png",
-                "dosage_info": "Quantity: 500g per 200L water (1 Acre). Method: Foliar spray every 10-12 days.",
+                "name": "Ridomil Gold (Metalaxyl 8% + Mancozeb 64%)",
+                "image": "https://5.imimg.com/data5/NX/IX/MY-40343753/ridomil-gold-fungicide-500x500.jpg",
+                "dosage_info": "Quantity: 500g per Acre. The gold-standard for Downy Mildew and Blight control.",
                 "vendors": [
                     {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Ridomil+Gold"},
-                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Metalaxyl+Mancozeb"},
-                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Metalaxyl+pesticide"}
+                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Ridomil+Gold"},
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Ridomil+Gold+Fungicide"}
                 ]
             }
         ],
@@ -157,71 +157,148 @@ DISEASE_TREATMENTS = {
     "Leaf Spot": {
         "severity": "Moderate",
         "symptoms": [
-            "Circular or irregular brown spots on leaves",
-            "Yellow halos around spots",
-            "Leaf yellowing and defoliation",
-            "Reduced plant vigor"
+            "Circular brown or black spots on leaves",
+            "Yellow halos around necrotized tissue",
+            "Premature leaf drop (defoliation)",
+            "Weakened plant structure"
         ],
         "causes": [
-            "Bacterial or fungal pathogens (Cercospora, Alternaria, Xanthomonas)",
-            "Warm, humid conditions",
-            "Overhead irrigation",
-            "Nutrient deficiency"
+            "Fungal (Cercospora, Alternaria) or Bacterial pathogens",
+            "High leaf wetness and humidity",
+            "Crowded plantation spacing"
         ],
         "fungicides": [
-            {
-                "name": "Mancozeb 75% WP",
-                "active_ingredient": "Mancozeb",
-                "dosage": "2.5 g/L water",
-                "application": "Spray every 7-10 days",
-                "brands": ["Dithane M-45", "Indofil M-45"]
-            },
-            {
-                "name": "Chlorothalonil 75% WP",
-                "active_ingredient": "Chlorothalonil",
-                "dosage": "2 g/L water",
-                "application": "Foliar spray at 10-day intervals",
-                "brands": ["Kavach", "Daconil"]
-            },
-            {
-                "name": "Copper Hydroxide 77% WP",
-                "active_ingredient": "Copper Hydroxide",
-                "dosage": "2.5 g/L water",
-                "application": "Spray for bacterial leaf spot",
-                "brands": ["Kocide", "Champion"]
-            }
+            {"name": "Mancozeb 75% WP", "dosage": "2.5g/L", "application": "Foliar spray"},
+            {"name": "Chlorothalonil 75% WP", "dosage": "2g/L", "application": "Spray every 10 days"}
         ],
         "preventive_measures": [
             "Practice crop rotation",
-            "Remove infected plant debris",
-            "Improve air circulation",
-            "Apply balanced fertilizers"
+            "Drip irrigation to keep leaves dry",
+            "Remove infected residue"
         ],
         "treatment_schedule": {
-            "Day 1": "Initial fungicide application",
-            "Day 7": "Second application",
-            "Day 14": "Third application",
-            "Day 21": "Assessment and final monitoring"
+            "Day 1": "Apply Mancozeb 75% WP spray",
+            "Day 7": "Repeat application if spots spread",
+            "Day 14": "Monitor new growth for clarity"
         },
-        "safety_precautions": [
-            "Use protective clothing and gloves",
-            "Maintain proper plant spacing",
-            "Avoid overhead irrigation",
-            "Sanitize tools regularly"
-        ],
+        "safety_precautions": ["Wear gloves", "Maintain 10-day PHI"],
         "products": [
             {
-                "name": "Mancozeb 75% WP",
-                "image": "https://img.icons8.com/wired/256/pesticide.png",
-                "dosage_info": "Quantity: 600g per 200L water (1 Acre). Method: Foliar spray every 7-10 days.",
+                "name": "Tata Saaf (Carbendazim + Mancozeb)",
+                "image": "https://5.imimg.com/data5/SELLER/Default/2021/6/ZO/RR/PX/12691763/tata-saaf-fungicide-500x500.jpg",
+                "dosage_info": "Usage: 2g/L water. Controls leaf spot and rust effectively.",
                 "vendors": [
-                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Mancozeb"},
-                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Mancozeb"},
-                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Mancozeb+pesticide"}
+                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=saaf"},
+                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=saaf"},
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=tata+saaf"}
                 ]
             }
         ],
-        "recovery_timeline": "14-21 days with proper management"
+        "recovery_timeline": "14-20 days"
+    },
+    "Late Blight": {
+        "severity": "Critical",
+        "symptoms": [
+            "Water-soaked dark green spots on leaves",
+            "White fuzzy growth on leaf undersides in humid weather",
+            "Rapid browning and shriveling of foliage",
+            "Dark brown patches on stems and tubers"
+        ],
+        "causes": [
+            "Phytophthora infestans (Oomycete)",
+            "Cool, wet weather (10-20°C)",
+            "High humidity (>90%)"
+        ],
+        "fungicides": [
+            {"name": "Metalaxyl 8% + Mancozeb 64%", "dosage": "2.5g/L", "application": "Curative spray"},
+            {"name": "Cymoxanil 8% + Mancozeb 64%", "dosage": "2g/L", "application": "Protective spray"}
+        ],
+        "preventive_measures": [
+            "Plant certified disease-free seeds",
+            "Destroy volunteer potato/tomato plants",
+            "Avoid overhead irrigation"
+        ],
+        "treatment_schedule": {
+            "Day 1": "Immediate spray of Ridomil Gold",
+            "Day 5": "Follow up with Equation Pro if spread continues",
+            "Day 12": "Final protective spray of Copper Oxychloride"
+        },
+        "safety_precautions": ["Full PPE required", "14-day PHI for Metalaxyl"],
+        "products": [
+            {
+                "name": "Ridomil Gold (Metalaxyl + Mancozeb)",
+                "image": "https://5.imimg.com/data5/NX/IX/MY-40343753/ridomil-gold-fungicide-500x500.jpg",
+                "dosage_info": "Dosage: 2.5g per Liter. Crucial for stopping Late Blight epidemic.",
+                "vendors": [
+                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Ridomil+Gold"},
+                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Ridomil"},
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Ridomil+Gold"}
+                ]
+            },
+            {
+                "name": "Equation Pro (Famoxadone + Cymoxanil)",
+                "image": "https://5.imimg.com/data5/SELLER/Default/2021/3/YK/WQ/XI/124508269/equation-pro-500x500.jpg",
+                "dosage_info": "Dosage: 1ml per Liter. Advanced systemic control for Blight.",
+                "vendors": [
+                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Equation+Pro"},
+                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Equation+Pro"},
+                    {"company": "Amazon India", "link": "https://www.amazon.in/s?k=Equation+Pro+Fungicide"}
+                ]
+            }
+        ],
+        "recovery_timeline": "21-30 days (requires intensive management)"
+    },
+    "Rice Blast": {
+        "severity": "Very High",
+        "symptoms": [
+            "Diamond-shaped lesions with gray centers",
+            "Neck rot (brown spots on panicle base)",
+            "Node blast (breakage of stem nodes)",
+            "Whitish/Grayish panicles without grain"
+        ],
+        "causes": [
+            "Magnaporthe oryzae (Fungus)",
+            "Excessive Nitrogen application",
+            "High humidity and frequent rainfall"
+        ],
+        "fungicides": [
+            {"name": "Tricyclazole 75% WP", "dosage": "0.6g/L", "application": "Preventive spray at tillering"},
+            {"name": "Isoprothiolane 40% EC", "dosage": "1.5ml/L", "application": "Spray at booting stage"}
+        ],
+        "preventive_measures": [
+            "Balanced NPK fertilization",
+            "Seed treatment with Pseudomonas fluorescens",
+            "Burning infected straw"
+        ],
+        "treatment_schedule": {
+            "Stage 1 (Tillering)": "Apply Beam (Tricyclazole)",
+            "Stage 2 (Booting)": "Apply Fujita (Isoprothiolane)",
+            "Stage 3 (Heading)": "Monitor for grain filling quality"
+        },
+        "safety_precautions": ["Avoid skin contact", "Keep livestock away from fields"],
+        "products": [
+            {
+                "name": "Beam (Tricyclazole 75% WP)",
+                "image": "https://5.imimg.com/data5/SELLER/Default/2021/2/QW/RE/PQ/122904732/tricyclazole-75-wp-500x500.jpg",
+                "dosage_info": "Dosage: 120g per Acre. Specialized for Rice Blast control.",
+                "vendors": [
+                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Beam+Tricyclazole"},
+                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Beam"},
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Tricyclazole"}
+                ]
+            },
+            {
+                "name": "Kasu B (Kasugamycin 3% SL)",
+                "image": "https://5.imimg.com/data5/SELLER/Default/2023/5/304910237/RE/XO/RR/18790243/kasu-b-antibiotic-fungicide-500x500.jpg",
+                "dosage_info": "Dosage: 400ml per Acre. Effective Bio-antibiotic for Neck Blast.",
+                "vendors": [
+                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Kasu+B"},
+                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Kasu+B"},
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Kasugamycin"}
+                ]
+            }
+        ],
+        "recovery_timeline": "25-35 days"
     },
     
     "Root Rot": {
@@ -944,7 +1021,7 @@ DISEASE_TREATMENTS = {
         "products": [
             {
                 "name": "Organic Seaweed Extract (Vigor Booster)",
-                "image": "https://img.icons8.com/wired/256/biotech.png",
+                "image": "https://cdn-icons-png.flaticon.com/512/3039/3039014.png",
                 "dosage_info": "Quantity: 500ml per 200L water. Method: Foliar spray for maximum yield.",
                 "vendors": [
                     {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=seaweed+extract"},
@@ -997,7 +1074,7 @@ def get_disease_info(disease_name):
             res["products"] = [
                 {
                     "name": "Broad Spectrum Bio-Pesticide",
-                    "image": "https://img.icons8.com/wired/256/pesticide.png",
+                    "image": "https://cdn-icons-png.flaticon.com/512/3039/3039014.png",
                     "dosage_info": "General dosage: 2ml per 1L water. Apply as foliar spray.",
                     "vendors": [
                         {"company": "AgriBegri", "link": f"https://agribegri.com/search.php?q={disease_name}+pesticide"},
