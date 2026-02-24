@@ -62,22 +62,10 @@ DISEASE_TREATMENTS = {
         "products": [
             {
                 "name": "Sulphex (Sulfur 80% WP)",
-                "image": "https://5.imimg.com/data5/SELLER/Default/2021/6/UM/YQ/YF/125368388/sulfur-80-wp-500x500.jpg",
-                "dosage_info": "Quantity: 500g per 1 Acre. Highly effective against Powdery Mildew and Mites.",
+                "image": "https://m.media-amazon.com/images/I/61j6GvS6XNL._SL1000_.jpg",
+                "dosage_info": "Usage: 2g/L water. High performance control for Powdery Mildew and Mites.",
                 "vendors": [
-                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Sulphex"},
-                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Sulphex"},
-                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Sulfur+80+WP"}
-                ]
-            },
-            {
-                "name": "Amistar (Azoxystrobin 23% SC)",
-                "image": "https://5.imimg.com/data5/SELLER/Default/2023/1/RP/VI/TM/125368388/amistar-fungicide-500x500.jpg",
-                "dosage_info": "Quantity: 200ml per Acre. Broad-spectrum control with energy booster effect.",
-                "vendors": [
-                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Amistar"},
-                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Amistar"},
-                    {"company": "Amazon India", "link": "https://www.amazon.in/s?k=Amistar+Syngenta"}
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Sulfur+80+WP+Fungicide"}
                 ]
             }
         ],
@@ -141,12 +129,10 @@ DISEASE_TREATMENTS = {
         ],
         "products": [
             {
-                "name": "Ridomil Gold (Metalaxyl 8% + Mancozeb 64%)",
-                "image": "https://5.imimg.com/data5/NX/IX/MY-40343753/ridomil-gold-fungicide-500x500.jpg",
-                "dosage_info": "Quantity: 500g per Acre. The gold-standard for Downy Mildew and Blight control.",
+                "name": "Ridomil Gold (Metalaxyl + Mancozeb)",
+                "image": "https://m.media-amazon.com/images/I/61Rov3zPslL._SL1100_.jpg",
+                "dosage_info": "Usage: 2.5g/L water. Industry standard for Downy Mildew and Blight.",
                 "vendors": [
-                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Ridomil+Gold"},
-                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Ridomil+Gold"},
                     {"company": "Amazon", "link": "https://www.amazon.in/s?k=Ridomil+Gold+Fungicide"}
                 ]
             }
@@ -185,12 +171,10 @@ DISEASE_TREATMENTS = {
         "products": [
             {
                 "name": "Tata Saaf (Carbendazim + Mancozeb)",
-                "image": "https://5.imimg.com/data5/SELLER/Default/2021/6/ZO/RR/PX/12691763/tata-saaf-fungicide-500x500.jpg",
-                "dosage_info": "Usage: 2g/L water. Controls leaf spot and rust effectively.",
+                "image": "https://m.media-amazon.com/images/I/71OnzEwU-oL._SL1500_.jpg",
+                "dosage_info": "Usage: 2g/L water. Multi-purpose systemic and contact protection.",
                 "vendors": [
-                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=saaf"},
-                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=saaf"},
-                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=tata+saaf"}
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Tata+Saaf+Fungicide"}
                 ]
             }
         ],
@@ -226,23 +210,11 @@ DISEASE_TREATMENTS = {
         "safety_precautions": ["Full PPE required", "14-day PHI for Metalaxyl"],
         "products": [
             {
-                "name": "Ridomil Gold (Metalaxyl + Mancozeb)",
-                "image": "https://5.imimg.com/data5/NX/IX/MY-40343753/ridomil-gold-fungicide-500x500.jpg",
-                "dosage_info": "Dosage: 2.5g per Liter. Crucial for stopping Late Blight epidemic.",
+                "name": "Ridomil Gold (Curative Systemic)",
+                "image": "https://m.media-amazon.com/images/I/61Rov3zPslL._SL1100_.jpg",
+                "dosage_info": "Usage: 2.5g/L water. Critical for stopping Late Blight epidemic.",
                 "vendors": [
-                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Ridomil+Gold"},
-                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Ridomil"},
                     {"company": "Amazon", "link": "https://www.amazon.in/s?k=Ridomil+Gold"}
-                ]
-            },
-            {
-                "name": "Equation Pro (Famoxadone + Cymoxanil)",
-                "image": "https://5.imimg.com/data5/SELLER/Default/2021/3/YK/WQ/XI/124508269/equation-pro-500x500.jpg",
-                "dosage_info": "Dosage: 1ml per Liter. Advanced systemic control for Blight.",
-                "vendors": [
-                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Equation+Pro"},
-                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Equation+Pro"},
-                    {"company": "Amazon India", "link": "https://www.amazon.in/s?k=Equation+Pro+Fungicide"}
                 ]
             }
         ],
@@ -279,22 +251,10 @@ DISEASE_TREATMENTS = {
         "products": [
             {
                 "name": "Beam (Tricyclazole 75% WP)",
-                "image": "https://5.imimg.com/data5/SELLER/Default/2021/2/QW/RE/PQ/122904732/tricyclazole-75-wp-500x500.jpg",
-                "dosage_info": "Dosage: 120g per Acre. Specialized for Rice Blast control.",
+                "image": "https://m.media-amazon.com/images/I/41K-vN-iT-L.jpg",
+                "dosage_info": "Usage: 0.6g/L water. Specialized for Rice Blast control.",
                 "vendors": [
-                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Beam+Tricyclazole"},
-                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Beam"},
-                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Tricyclazole"}
-                ]
-            },
-            {
-                "name": "Kasu B (Kasugamycin 3% SL)",
-                "image": "https://5.imimg.com/data5/SELLER/Default/2023/5/304910237/RE/XO/RR/18790243/kasu-b-antibiotic-fungicide-500x500.jpg",
-                "dosage_info": "Dosage: 400ml per Acre. Effective Bio-antibiotic for Neck Blast.",
-                "vendors": [
-                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=Kasu+B"},
-                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=Kasu+B"},
-                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Kasugamycin"}
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Tricyclazole+Fungicide"}
                 ]
             }
         ],
@@ -1021,12 +981,10 @@ DISEASE_TREATMENTS = {
         "products": [
             {
                 "name": "Organic Seaweed Extract (Vigor Booster)",
-                "image": "https://cdn-icons-png.flaticon.com/512/3039/3039014.png",
-                "dosage_info": "Quantity: 500ml per 200L water. Method: Foliar spray for maximum yield.",
+                "image": "https://m.media-amazon.com/images/I/61Nl-W92GkL._SL1100_.jpg",
+                "dosage_info": "Usage: 2ml/L water. Natural growth promoter and immunity booster.",
                 "vendors": [
-                    {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=seaweed+extract"},
-                    {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=seaweed+extract"},
-                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=organic+fertilizer"}
+                    {"company": "Amazon", "link": "https://www.amazon.in/s?k=Liquid+Seaweed+Fertilizer"}
                 ]
             }
         ],
@@ -1074,11 +1032,9 @@ def get_disease_info(disease_name):
             res["products"] = [
                 {
                     "name": "Broad Spectrum Bio-Pesticide",
-                    "image": "https://cdn-icons-png.flaticon.com/512/3039/3039014.png",
+                    "image": "https://m.media-amazon.com/images/I/41K-vN-iT-L.jpg",
                     "dosage_info": "General dosage: 2ml per 1L water. Apply as foliar spray.",
                     "vendors": [
-                        {"company": "AgriBegri", "link": f"https://agribegri.com/search.php?q={disease_name}+pesticide"},
-                        {"company": "BigHaat", "link": f"https://www.bighaat.com/search?q={disease_name}+pesticide"},
                         {"company": "Amazon", "link": f"https://www.amazon.in/s?k={disease_name}+pesticide"}
                     ]
                 }
@@ -1097,12 +1053,10 @@ def get_disease_info(disease_name):
         "products": [
             {
                 "name": f"Recommended for {disease_name or 'Crop Condition'}",
-                "image": "https://img.icons8.com/wired/256/pesticide.png",
+                "image": "https://m.media-amazon.com/images/I/41K-vN-iT-L.jpg",
                 "dosage_info": "Generic agricultural protection. Refer to package label for dosage.",
                 "vendors": [
-                    {"company": "AgriBegri", "link": f"https://agribegri.com/search.php?q={disease_name}+pesticide"},
-                    {"company": "BigHaat", "link": f"https://www.bighaat.com/search?q={disease_name}+pesticide"},
-                    {"company": "Amazon", "link": f"https://www.amazon.in/s?k={disease_name}+pesticide"}
+                    {"company": "Amazon", "link": f"https://www.amazon.in/s?k={disease_name or 'Crop'}+pesticide"}
                 ]
             }
         ],

@@ -632,9 +632,9 @@ with col_viz:
                                     </div>
                                 </div>
                                 <div style="background: rgba(139, 148, 158, 0.05); border-radius: 8px; padding: 12px; border: 1px dashed #30363d;">
-                                    <p style="font-size: 12px; font-weight: bold; margin-bottom: 10px; color: #00d1ff;">🛒 DIRECT PURCHASE CHANNELS:</p>
+                                    <p style="font-size: 12px; font-weight: bold; margin-bottom: 10px; color: #00d1ff;">🛒 PURCHASE ON AMAZON:</p>
                                     <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                                        {" ".join([f'<a href="{v["link"]}" target="_blank" style="text-decoration: none; background: #238636; color: white; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: bold; border-bottom: 2px solid #1a6328; transition: 0.2s;">🛍️ {v["company"]}</a>' for v in prod.get('vendors', [])])}
+                                        {" ".join([f'<a href="{v["link"]}" target="_blank" style="text-decoration: none; background: #FF9900; color: #000; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: bold; border-bottom: 2px solid #cc7a00; transition: 0.2s;">🛍️ BUY ON AMAZON</a>' for v in prod.get('vendors', []) if v['company'].lower() == 'amazon']) or '<span style="color:#8b949e; font-size:12px;">Amazon listing currently unavailable for this specific SKU.</span>'}
                                     </div>
                                 </div>
                             </div>

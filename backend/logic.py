@@ -577,11 +577,9 @@ def vision_diagnosis_logic(image_base64, language):
                 "products": [
                     {
                         "name": "Broad Spectrum Bio-Pesticide",
-                        "image": "https://img.icons8.com/wired/256/pesticide.png",
-                        "dosage_info": "General dosage: 2ml per 1L water. Apply as foliar spray.",
+                        "image": "https://m.media-amazon.com/images/I/41K-vN-iT-L.jpg",
+                        "dosage_info": "Usage: 2ml per 1L water. General agricultural protection.",
                         "vendors": [
-                            {"company": "AgriBegri", "link": "https://agribegri.com/search.php?q=bio+pesticide"},
-                            {"company": "BigHaat", "link": "https://www.bighaat.com/search?q=bio+pesticide"},
                             {"company": "Amazon", "link": "https://www.amazon.in/s?k=bio+pesticide+for+plants"}
                         ]
                     }
