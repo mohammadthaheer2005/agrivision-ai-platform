@@ -46,8 +46,19 @@ def test_intelligence_logic():
     else:
         print("✗ Intelligence generation failed.")
 
+def test_forward_geocoding():
+    print("\n--- Testing Forward Geocoding (Search) ---")
+    query = "Buchireddypalem, Nellore, Andhra Pradesh"
+    print(f"Query: {query}")
+    res = logic.forward_geocode(query)
+    if res:
+        print(f"✓ Forward geocoding successful: {res}")
+    else:
+        print("✗ Forward geocoding failed.")
+
 if __name__ == "__main__":
     # Note: This requires geopy and requests to be installed in the environment
     # and a valid GROQ_API_KEY in the .env file.
     test_geocoding()
+    test_forward_geocoding()
     test_intelligence_logic()

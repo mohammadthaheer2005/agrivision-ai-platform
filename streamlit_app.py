@@ -305,10 +305,11 @@ if 'bio_context' not in st.session_state: st.session_state.bio_context = None
 if 'intel' not in st.session_state: st.session_state.intel = ""
 if 'audit' not in st.session_state: st.session_state.audit = None
 if 'last_speech' not in st.session_state: st.session_state.last_speech = None
-if 'voice_active' not in st.session_state: st.session_state.voice_active = True
-if 'telemetry' not in st.session_state: st.session_state.telemetry = {"temp": 28.5, "ph": 6.5, "n": 2.50, "suitability": 85}
 if 'last_report_url' not in st.session_state: st.session_state.last_report_url = None
 if 'last_speech_text' not in st.session_state: st.session_state.last_speech_text = ""
+if 'map_center' not in st.session_state: st.session_state.map_center = [20.5937, 78.9629]
+if 'map_zoom' not in st.session_state: st.session_state.map_zoom = 5
+if 'map_coords' not in st.session_state: st.session_state.map_coords = None
 
 
 # --- SIDEBAR (INDUSTRIAL CONTROL ARRAY) ---
@@ -328,36 +329,35 @@ with st.sidebar:
     
     st.markdown('<div class="sidebar-section-label">Geographic Logistics</div>', unsafe_allow_html=True)
     
-    # --- INTERACTIVE MAP (V29.0) ---
-    st.caption("Click on the map to select mission coordinates")
-    m = folium.Map(location=[20.5937, 78.9629], zoom_start=4) # India Centered
-    map_data = st_folium(m, height=250, width=None, key="geo_map")
-    
-    # Auto-fill logic from map click
-    if map_data and map_data.get("last_clicked"):
-        lat = map_data["last_clicked"]["lat"]
-        lon = map_data["last_clicked"]["lng"]
-        st.session_state.map_coords = (lat, lon)
-        
-        # Immediate background reverse geocode check for UI feedback
-        with st.spinner("Decoding Coordinates..."):
-            try:
-                from backend import logic
-                geo = logic.reverse_geocode(lat, lon)
-                if geo:
-                    st.session_state.place_val = geo["place"]
-                    st.session_state.state_val = geo["state"]
-                    st.session_state.country_val = geo["country"]
-            except:
-                pass
-
     if 'place_val' not in st.session_state: st.session_state.place_val = "Coimbatore"
     if 'state_val' not in st.session_state: st.session_state.state_val = "Tamil Nadu"
     if 'country_val' not in st.session_state: st.session_state.country_val = "India"
 
-    country = st.text_input("Country", st.session_state.country_val, label_visibility="collapsed", placeholder="Country")
-    state = st.text_input("State", st.session_state.state_val, label_visibility="collapsed", placeholder="State")
-    place = st.text_input("Place", st.session_state.place_val, label_visibility="collapsed", placeholder="Place")
+    country = st.text_input("Country", st.session_state.country_val, key="country_input")
+    state = st.text_input("State", st.session_state.state_val, key="state_input")
+    place = st.text_input("Place", st.session_state.place_val, key="place_input")
+    
+    # Sync internal state
+    st.session_state.place_val = place
+    st.session_state.state_val = state
+    st.session_state.country_val = country
+
+    if st.button("📍 LOCATE ON MAP", use_container_width=True):
+        with st.spinner("Searching Coordinates..."):
+            try:
+                from backend import logic
+                query = f"{place}, {state}, {country}"
+                res = logic.forward_geocode(query)
+                if res:
+                    st.session_state.map_center = [res["lat"], res["lon"]]
+                    st.session_state.map_coords = (res["lat"], res["lon"])
+                    st.session_state.map_zoom = 12
+                    st.success(f"Located: {res['display_name'][:50]}...")
+                    st.rerun()
+                else:
+                    st.warning("Location not found on map. Try broad terms.")
+            except:
+                st.error("Forward Geocode Error.")
     
     soil = st.selectbox("Soil Profile", ["Alluvial", "Black", "Red", "Sandy", "Clay", "Loamy"], label_visibility="collapsed")
     season = st.selectbox("Season", ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], index=datetime.datetime.now().month-1, label_visibility="collapsed")
@@ -536,16 +536,49 @@ st.markdown(f'''
 col_viz, col_chat = st.columns([1.5, 1.8])
 
 with col_viz:
-    # --- DYNAMIC INTELLIGENCE PANEL (V28.1) ---
-    if st.session_state.intel:
-        st.markdown(f'''
-        <div class="audit-panel" style="border-top-color: #00d1ff; margin-bottom: 20px;">
-            <div class="audit-title" style="color: #00d1ff;">🌍 GEOGRAPHIC INTELLIGENCE REPORT</div>
-            <div style="font-size: 14px; line-height: 1.6;">{st.session_state.intel}</div>
-        </div>
-        ''', unsafe_allow_html=True)
+    # --- DYNAMIC INTELLIGENCE TABBED PANEL (V29.0) ---
+    tabs = st.tabs(["🛰️ SATELLITE MAP", "🌍 FIELD INTEL", "🧬 BIO-SCAN"])
+    
+    with tabs[0]:
+        st.markdown('<div class="sidebar-section-label" style="margin-top:0">LIVE GEOGRAPHIC SATELLITE</div>', unsafe_allow_html=True)
+        # Larger map in main area
+        m = folium.Map(location=st.session_state.map_center, zoom_start=st.session_state.map_zoom)
+        if st.session_state.map_coords:
+            folium.Marker(st.session_state.map_coords, popup="Selected Mission Site").add_to(m)
+        
+        map_interaction = st_folium(m, height=450, width=None, key="main_geo_map", use_container_width=True)
+        
+        # Click detection logic in main map
+        if map_interaction and map_interaction.get("last_clicked"):
+            c = map_interaction["last_clicked"]
+            if (c["lat"], c["lng"]) != st.session_state.get('last_clicked_cached'):
+                st.session_state.last_clicked_cached = (c["lat"], c["lng"])
+                st.session_state.map_coords = (c["lat"], c["lng"])
+                st.session_state.map_center = [c["lat"], c["lng"]]
+                # Background geocode
+                try:
+                    from backend import logic
+                    geo = logic.reverse_geocode(c["lat"], c["lng"])
+                    if geo:
+                        st.session_state.place_val = geo["place"]
+                        st.session_state.state_val = geo["state"]
+                        st.session_state.country_val = geo["country"]
+                        st.rerun()
+                except: pass
 
-    if st.session_state.audit:
+    with tabs[1]:
+        if st.session_state.intel:
+            st.markdown(f'''
+            <div class="audit-panel" style="border-top-color: #00d1ff; margin-bottom: 20px;">
+                <div class="audit-title" style="color: #00d1ff;">🌍 GEOGRAPHIC INTELLIGENCE REPORT</div>
+                <div style="font-size: 14px; line-height: 1.6;">{st.session_state.intel}</div>
+            </div>
+            ''', unsafe_allow_html=True)
+        else:
+            st.info("🛰️ Select a location to generate geographic intelligence.")
+
+    with tabs[2]:
+        if st.session_state.audit:
         audit_data = st.session_state.audit
         db = audit_data.get('db', {})
         st.markdown(f'''

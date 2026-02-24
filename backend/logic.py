@@ -60,6 +60,21 @@ def reverse_geocode(lat, lon):
         pass
     return None
 
+def forward_geocode(query):
+    """Converts a human-readable location into coordinates."""
+    try:
+        geolocator = Nominatim(user_agent="agrivision_ai")
+        location = geolocator.geocode(query, language='en')
+        if location:
+            return {
+                "lat": location.latitude,
+                "lon": location.longitude,
+                "display_name": location.address
+            }
+    except GeopyError:
+        pass
+    return None
+
 def get_real_commodity_prices():
     api_key = os.getenv("COMMODITIES_API_KEY")
     if not api_key: return None
