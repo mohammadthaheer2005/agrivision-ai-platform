@@ -968,24 +968,46 @@ def get_disease_info(disease_name):
     disease_key = disease_name.strip().title()
     disease_lower = disease_name.lower()
     
+    # Ensure 'products' key exists
+    res = None
     # 1. Try exact match first
     if disease_key in DISEASE_TREATMENTS:
-        return DISEASE_TREATMENTS[disease_key]
+        res = DISEASE_TREATMENTS[disease_key].copy()
     
     # 2. Try partial match
-    for key in DISEASE_TREATMENTS:
-        if disease_lower in key.lower() or key.lower() in disease_lower:
-            return DISEASE_TREATMENTS[key]
+    if not res:
+        for key in DISEASE_TREATMENTS:
+            if disease_lower in key.lower() or key.lower() in disease_lower:
+                res = DISEASE_TREATMENTS[key].copy()
+                break
             
-    # 3. Smart Token Match (e.g., "Tomato Late Blight" matches "Tomato Blight")
-    query_tokens = set(disease_lower.replace("on", "").replace("the", "").split())
-    for key, info in DISEASE_TREATMENTS.items():
-        key_tokens = set(key.lower().split())
-        # If at least 2 significant words match, or 50% of the key matches
-        intersection = query_tokens.intersection(key_tokens)
-        if len(intersection) >= 2 or (len(intersection) >= 1 and len(intersection) / len(key_tokens) >= 0.5):
-            return info
+    # 3. Smart Token Match
+    if not res:
+        query_tokens = set(disease_lower.replace("on", "").replace("the", "").split())
+        for key, info in DISEASE_TREATMENTS.items():
+            key_tokens = set(key.lower().split())
+            intersection = query_tokens.intersection(key_tokens)
+            if len(intersection) >= 2 or (len(intersection) >= 1 and len(intersection) / len(key_tokens) >= 0.5):
+                res = info.copy()
+                break
     
+    if res:
+        if "products" not in res or not res["products"]:
+            # Add general broad-spectrum recommendation if missing
+            res["products"] = [
+                {
+                    "name": "Broad Spectrum Bio-Pesticide",
+                    "image": "https://img.icons8.com/wired/256/pesticide.png",
+                    "dosage_info": "General dosage: 2ml per 1L water. Apply as foliar spray.",
+                    "vendors": [
+                        {"company": "AgriBegri", "link": f"https://agribegri.com/search.php?q={disease_name}+pesticide"},
+                        {"company": "BigHaat", "link": f"https://www.bighaat.com/search?q={disease_name}+pesticide"},
+                        {"company": "Amazon", "link": f"https://www.amazon.in/s?k={disease_name}+pesticide"}
+                    ]
+                }
+            ]
+        return res
+
     # Return generic info if not found
     return {
         "severity": "Unknown",
@@ -995,6 +1017,17 @@ def get_disease_info(disease_name):
         "preventive_measures": ["Practice good agricultural hygiene"],
         "treatment_schedule": {},
         "safety_precautions": ["Always wear protective equipment"],
-        "products": [],
+        "products": [
+            {
+                "name": f"Recommended for {disease_name or 'Crop Condition'}",
+                "image": "https://img.icons8.com/wired/256/pesticide.png",
+                "dosage_info": "Generic agricultural protection. Refer to package label for dosage.",
+                "vendors": [
+                    {"company": "AgriBegri", "link": f"https://agribegri.com/search.php?q={disease_name}+pesticide"},
+                    {"company": "BigHaat", "link": f"https://www.bighaat.com/search?q={disease_name}+pesticide"},
+                    {"company": "Amazon", "link": f"https://www.amazon.in/s?k={disease_name}+pesticide"}
+                ]
+            }
+        ],
         "recovery_timeline": "Consult expert for timeline"
     }
