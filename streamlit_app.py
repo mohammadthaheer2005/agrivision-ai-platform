@@ -538,8 +538,8 @@ st.markdown(f'''
 col_viz, col_chat = st.columns([1.5, 1.8])
 
 with col_viz:
-    # --- DYNAMIC INTELLIGENCE TABBED PANEL (V29.0) ---
-    tabs = st.tabs(["🛰️ SATELLITE MAP", "🌍 FIELD INTEL", "🧬 BIO-SCAN"])
+    # --- DYNAMIC INTELLIGENCE TABBED PANEL (V30.2) ---
+    tabs = st.tabs(["🛰️ SATELLITE MAP", "🌍 FIELD INTEL", "🧬 BIO-SCAN", "🛒 MARKETPLACE"])
     
     with tabs[0]:
         st.markdown('<div class="sidebar-section-label" style="margin-top:0">🛰️ MULTISPECTRAL SATELLITE ARRAY</div>', unsafe_allow_html=True)
@@ -610,15 +610,14 @@ with col_viz:
                     for day, action in db.get('treatment_schedule', {}).items():
                         st.markdown(f"**{day}**: {action}")
 
-    # --- NEW TREATMENT MARKETPLACE TAB (V30.1) ---
-    marketplace_tab = st.tabs(["🛒 TREATMENT MARKETPLACE"])
-    with marketplace_tab[0]:
+    with tabs[3]:
+        st.markdown('<div class="sidebar-section-label" style="margin-top:0">🛒 TREATMENT MARKETPLACE</div>', unsafe_allow_html=True)
         if st.session_state.audit:
-            db = st.session_state.audit.get('db', {})
+            audit_data = st.session_state.audit
+            db = audit_data.get('db', {})
             products = db.get('products', [])
             
             if products:
-                st.markdown('<div class="sidebar-section-label" style="margin-top:0">COMMERCIAL TREATMENT OPTIONS</div>', unsafe_allow_html=True)
                 for prod in products:
                     with st.container():
                         st.markdown(f"""
@@ -639,7 +638,9 @@ with col_viz:
                         </div>
                         """, unsafe_allow_html=True)
             else:
-                st.info("No commercial product listings available for this diagnosis yet. Please check back soon.")
+                st.info("No commercial product listings available for this diagnosis yet.")
+        else:
+            st.info("⚡ Perform a Bio-Scan audit to unlock the Treatment Marketplace.")
 
     # 1. Telemetry Matrix
     st.markdown('<div class="sidebar-section-label">Real-Time Telemetry Matrix</div>', unsafe_allow_html=True)
