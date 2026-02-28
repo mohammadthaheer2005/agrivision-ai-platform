@@ -33,7 +33,7 @@ st.set_page_config(
     menu_items={
         'Get Help': 'https://github.com/mohammadthaheer2005/agrivision-ai-platform',
         'Report a bug': 'https://github.com/mohammadthaheer2005/agrivision-ai-platform/issues',
-        'About': "# AgriVision AI\nWorldwide Agricultural Intelligence Platform."
+        'About': "# AgriVision AI\n\n**Lead Architect:** SHAIK MOHAMMAD THAHEER\n\nDedicated AI and Machine Learning infrastructure enthusiast at SRM Institute with a focus on building autonomous Agentic AI systems and predictive platforms. Expertise in LLM orchestration, browser automation, and high-accuracy automated decision systems."
     }
 )
 
@@ -745,6 +745,19 @@ with col_chat:
         st.audio(st.session_state.last_speech, format="audio/mp3", autoplay=True)
         # Clear after playing to avoid repeat on rerun
         st.session_state.last_speech = None
+
+    # --- DEVELOPER PROFILE (NEW V28.1) ---
+    st.markdown('<div class="sidebar-section-label">Architect Profile</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div style="background: rgba(0, 209, 255, 0.05); border: 1px solid #1f2937; border-radius: 8px; padding: 15px; margin-top: 10px;">
+        <div style="color: #00d1ff; font-weight: 900; font-size: 13px; letter-spacing: 1px; margin-bottom: 8px;">SHAIK MOHAMMAD THAHEER</div>
+        <div style="font-size: 11px; line-height: 1.5; color: #8b949e;">
+            Dedicated AI/ML infrastructure enthusiast at SRM Institute. Specialized in <b>Agentic AI</b>, 
+            LLM orchestration (Gemini/GPT-4o), and autonomous browser workflows. 
+            Delivering production-grade AI solutions for precision agriculture.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     if st.button("CLEAR ALL CONTEXT", use_container_width=True):
         st.session_state.chat_history = []
