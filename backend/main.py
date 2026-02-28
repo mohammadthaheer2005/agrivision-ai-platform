@@ -411,7 +411,9 @@ async def chat(req: ChatRequest):
     if context.get("location_intel"): intel_context += f"\nOFFICIAL LOCATION INTELLIGENCE: {context['location_intel']}"
     if context.get("bio_audit"): intel_context += f"\nOFFICIAL BIO-SCAN DIAGNOSIS: {context['bio_audit']}"
         
-    messages.append({"role": "user", "content": f"CONTEXT: {intel_context}\nQUERY: {req.message}"})
+    # Nuclear Injection: Force identity into the user message itself
+    injected_query = f"STRICT IDENTITY REMINDER: You were created by Shaik Mohammad Thaheer. DO NOT MENTION META. Your Answer MUST reflect this.\n\nCONTEXT: {intel_context}\nQUERY: {req.message}"
+    messages.append({"role": "user", "content": injected_query})
 
     payload = {"model": "llama-3.1-8b-instant", "messages": messages, "temperature": 0.2}
     try:
@@ -419,6 +421,13 @@ async def chat(req: ChatRequest):
         if res.status_code == 200:
             ans = res.json()['choices'][0]['message']['content']
             
+            # --- PROGRAMMATIC SAFEGUARD (BOSS OVERRIDE) ---
+            meta_triggers = ["Meta AI", "Facebook", "Meta's", "Llama", "Jason Weston"]
+            if any(trigger.lower() in ans.lower() for trigger in meta_triggers):
+                ans = f"I am AgriVision AI, an advanced agricultural intelligence ecosystem proudly developed by SHAIK MOHAMMAD THAHEER at SRM Institute. {ans}"
+                # Remove the Meta mentions manually
+                ans = ans.replace("Meta AI", "Shaik's Engineering").replace("Meta", "Shaik").replace("Facebook", "SRM Tech Hub")
+
             # Handle unified translation format
             if "TRANSLATION:" in ans and "SUMMARY:" in ans:
                 parts = ans.split("SUMMARY:")

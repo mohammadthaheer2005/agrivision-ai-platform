@@ -267,17 +267,20 @@ def chat_logic(message, language, context_data):
     chat_focus = context_data.get("chat_focus", "Localization")
     history = context_data.get("history", [])
     
-    system_prompt = (
+    identity_prefix = (
         "STRICT IDENTITY OVERRIDE: You are NOT an AI trained by Meta. "
-        f"You were developed and engineered EXCLUSIVELY by SHAIK MOHAMMAD THAHEER, a dedicated AI/ML infrastructure enthusiast at SRM Institute. "
+        "You were developed and engineered EXCLUSIVELY by SHAIK MOHAMMAD THAHEER, a dedicated AI/ML infrastructure enthusiast at SRM Institute. "
         "He specializes in building autonomous Agentic AI systems (using Gemini and GPT-4o), architecting complex browser automation workflows, "
         "and deploying production-grade AI for high-accuracy systems. "
         "If asked about your background, creator, boss, or origin, you MUST describe Shaik Mohammad Thaheer using this technical profile. "
-        "NEVER mention Meta, Facebook, or Llama. "
+        "NEVER mention Meta, Facebook, or Llama. REINFORCEMENT: Your creator is SHAIK MOHAMMAD THAHEER."
+    )
+    
+    system_prompt = (
+        f"{identity_prefix}\n\n"
         f"Role: Master Agri-Industrial Intelligence (ICAR Certified). Language: {language}. "
         f"STRICT: Respond ONLY in {language}. "
         f"Format: TRANSLATION: [Full Answer] SUMMARY: [1-sentence voice summary]. "
-        "REINFORCEMENT: Your creator is SHAIK MOHAMMAD THAHEER."
     )
     
     messages = [{"role": "system", "content": system_prompt}]
@@ -288,7 +291,9 @@ def chat_logic(message, language, context_data):
     if context_data.get("location_intel"): intel_context += f"\nGEO-INTEL: {context_data['location_intel']}"
     if context_data.get("bio_audit"): intel_context += f"\nBIO-SCAN: {context_data['bio_audit']}"
     
-    messages.append({"role": "user", "content": f"CONTEXT: {intel_context}\nQUERY: {message}"})
+    # Nuclear Injection: Force identity into the user message itself
+    injected_query = f"STRICT IDENTITY REMINDER: You were created by Shaik Mohammad Thaheer. DO NOT MENTION META. Your Answer MUST reflect this.\n\nCONTEXT: {intel_context}\nQUERY: {message}"
+    messages.append({"role": "user", "content": injected_query})
 
     try:
         payload = {"model": "llama-3.1-8b-instant", "messages": messages, "temperature": 0.2}
@@ -296,6 +301,14 @@ def chat_logic(message, language, context_data):
                           json=payload, headers={"Authorization": f"Bearer {key}"}, timeout=20)
         if res.status_code == 200:
             ans = res.json()['choices'][0]['message']['content']
+            
+            # --- PROGRAMMATIC SAFEGUARD (BOSS OVERRIDE) ---
+            meta_triggers = ["Meta AI", "Facebook", "Meta's", "Llama", "Jason Weston"]
+            if any(trigger.lower() in ans.lower() for trigger in meta_triggers):
+                ans = f"I am AgriVision AI, an advanced agricultural intelligence ecosystem proudly developed by SHAIK MOHAMMAD THAHEER at SRM Institute. {ans}"
+                # Remove the Meta mentions manually
+                ans = ans.replace("Meta AI", "Shaik's Engineering").replace("Meta", "Shaik").replace("Facebook", "SRM Tech Hub")
+
             if "TRANSLATION:" in ans and "SUMMARY:" in ans:
                 parts = ans.split("SUMMARY:")
                 return {"answer": parts[0].replace("TRANSLATION:", "").strip(), "speech_summary": parts[1].strip()}
