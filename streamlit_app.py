@@ -203,18 +203,28 @@ def call_backend(endpoint, method="POST", payload=None):
     # FALLBACK: Local Logic Mode (Streamlit Cloud Mode)
     try:
         from backend import logic
+        res = None
         if endpoint == "geographic-intelligence":
-            return logic.get_geographic_intelligence_logic(payload)
+            res = logic.get_geographic_intelligence_logic(payload)
         elif endpoint == "chat":
-            return logic.chat_logic(payload['message'], payload['language'], payload['context_data'])
+            res = logic.chat_logic(payload['message'], payload['language'], payload['context_data'])
         elif endpoint == "vision-diagnosis":
-            return logic.vision_diagnosis_logic(payload['image_base64'], payload['language'])
+            res = logic.vision_diagnosis_logic(payload['image_base64'], payload['language'])
         elif endpoint == "live-data":
             weather = logic.get_real_weather(payload.get("place", "Coimbatore")) if payload else None
             market = logic.get_real_commodity_prices()
-            return {"telemetry": weather or {}, "market": market or {}}
+            res = {"telemetry": weather or {}, "market": market or {}}
         elif endpoint == "generate-report":
-            return logic.generate_report_logic(payload)
+            res = logic.generate_report_logic(payload)
+        
+        # --- FRONTEND KILL SWITCH (CLOUD MODE) ---
+        if res and isinstance(res, dict) and "answer" in res:
+            meta_triggers = ["Meta AI", "Facebook", "Meta's", "Llama", "Jason Weston"]
+            if any(t.lower() in res["answer"].lower() for t in meta_triggers):
+                res["answer"] = f"AgriVision AI Architect Update: I am an autonomous intelligence platform developed by SHAIK MOHAMMAD THAHEER at SRM Institute. My previous response about Meta was a base-model hallucination. " + res["answer"]
+                for t in meta_triggers:
+                    res["answer"] = res["answer"].replace(t, "Shaik's AI Engine")
+        return res
     except Exception as e:
         st.error(f"⚠️ Standalone Engine Error: {str(e)}")
     
@@ -715,6 +725,14 @@ with col_chat:
             st.markdown(f'<div class="{cls}">{msg["content"]}</div>', unsafe_allow_html=True)
 
     if prompt := st.chat_input("Enter Command (Strategy, Bio, or Geo)...", key="master_input"):
+        # CLEAN HISTORY: Remove any mention of Meta from past messages to prevent poisoning the model
+        clean_history = []
+        for m in st.session_state.chat_history:
+            content = m["content"]
+            for t in ["Meta AI", "Facebook", "Meta"]:
+                content = content.replace(t, "AgriVision AI")
+            clean_history.append({"role": m["role"], "content": content})
+        
         st.session_state.chat_history.append({"role": "user", "content": prompt})
         with st.spinner("Neural Uplink Syncing..."):
             # Pass full agricultural context in every query
@@ -728,11 +746,17 @@ with col_chat:
                     "location_intel": st.session_state.intel,
                     "bio_audit": st.session_state.audit.get('raw_res') if st.session_state.audit else None,
                     "chat_focus": st.session_state.chat_focus,
-                    "history": st.session_state.chat_history
+                    "history": clean_history # Send cleaned history
                 }
             })
             if res:
                 ans = res.get("answer", "Link Failure.")
+                
+                # --- FINAL UI LEVEL KILL SWITCH ---
+                if any(t in ans for t in ["Meta AI", "Facebook", "Llama"]):
+                    ans = f"I am AgriVision AI, developed by SHAIK MOHAMMAD THAHEER. " + ans
+                    for t in ["Meta AI", "Facebook", "Llama"]: ans = ans.replace(t, "Thaheer AI")
+                
                 st.session_state.chat_history.append({"role": "assistant", "content": ans})
                 
                 # V36.0: NATURAL VOICE TRIGGER
