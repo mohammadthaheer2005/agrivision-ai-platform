@@ -19,7 +19,7 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("AGRI_V14_BACKEND")
 
-app = FastAPI(title="Agri-Command Industrial Web Master V21.0")
+app = FastAPI(title="Agri-Command Elite Industrial Master V28.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -212,7 +212,7 @@ def get_official_resource(query):
 # --- ENDPOINTS ---
 @app.get("/api/health")
 async def health_check():
-    return {"status": "operational", "version": "14.0", "real_data": True}
+    return {"status": "operational", "version": "28.0", "real_data": True}
 
 @app.get("/api/live-data")
 async def get_live_data():

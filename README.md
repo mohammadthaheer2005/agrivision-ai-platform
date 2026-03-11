@@ -1,38 +1,38 @@
-# 🛰️ AgriVision AI Platform
+# 🛰️ AgriVision AI: Elite Cyber-Industrial Platform
 ### *The Next Generation of Intelligent Crop Management & Precision Agriculture*
 
-[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![FastAPI](https://img.shields.io/badge/API-FastAPI-009688.svg)](https://fastapi.tiangolo.com/)
-[![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B.svg)](https://streamlit.io/)
-[![Groq AI](https://img.shields.io/badge/AI-Groq-orange.svg)](https://groq.com/)
-[![Status](https://img.shields.io/badge/Status-Production--Ready-success.svg)]()
+![AgriVision Banner](https://img.shields.io/badge/AgriVision--AI-V28.0--Elite-00d1ff?style=for-the-badge&logo=ai)
+[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg?style=for-the-badge&logo=python)](https://www.python.org/downloads/)
+[![FastAPI](https://img.shields.io/badge/API-FastAPI-009688.svg?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
+[![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B.svg?style=for-the-badge&logo=streamlit)](https://streamlit.io/)
+[![Groq AI](https://img.shields.io/badge/AI-Groq-orange.svg?style=for-the-badge)](https://groq.com/)
 
-AgriVision AI is an enterprise-grade, computer vision-powered platform designed to revolutionize modern farming. By merging advanced AI diagnostics with real-time environmental telemetry, we empower agronomists and farmers to make data-driven decisions with clinical precision.
+AgriVision AI is an **enterprise-grade**, computer vision-powered platform designed to revolutionize modern farming. By merging advanced AI diagnostics with real-time environmental telemetry, we empower agronomists and farmers to make data-driven decisions with clinical precision.
 
 ---
 
-## 🚀 Key Capabilities
+## 💎 Elite Capabilities
 
 ### 🔍 **Precision Bio-Scan (Computer Vision)**
-Leveraging state-of-the-art vision models (LLaVA/Qwen via Groq & HuggingFace), the platform identifies crop diseases, pests, and nutrient deficiencies from a single image. It provides:
-*   **Instant Diagnosis**: Specific disease identification with confidence scores.
-*   **Scientific Rationale**: Deep-dive into pathogen causes and visual markers.
-*   **Treatment Protocols**: ICAR & TNAU-aligned chemical and organic recommendations.
+Leveraging state-of-the-art vision models (**Qwen2.5-VL** via HuggingFace), the platform identifies crop diseases, pests, and nutrient deficiencies with elite accuracy.
+*   **Instant Diagnosis**: Specific disease identification with high confidence scores.
+*   **Botanical Markers**: Deep-scan analysis of leaf margins, arrangement, and pathology.
+*   **Treatment Protocols**: ICAR-aligned chemical and organic recommendations.
 
-### 🌍 **Geographic Intelligence**
-A specialized analytical engine that processes regional data to maximize yield:
-*   **Crop Suitability**: Scientifically validated scores for over 20+ commercial crops.
-*   **Regional Knowledge**: Integration with localized agricultural databases across India.
+### 🌍 **Geographic Intelligence Hub**
+A specialized analytical engine that processes regional data to maximize yield through scientific validation.
+*   **Regional Knowledge**: Integration with localized agricultural databases across India (Nellore, Coimbatore, etc.).
 *   **Dynamic Intelligence**: Automated Wikipedia-assisted contextual research for any location globally.
+*   **Crop Suitability**: Scientifically validated scores for commercial crops based on soil taxonomy.
 
-### 📊 **Industrial Telemetry & Analytics**
-Monitor your field in real-time with an integrated sensor matrix:
+### 📊 **Industrial Telemetry Matrix**
+Monitor your field in real-time with an integrated sensor matrix and predictive analytics.
 *   **Environmental Tracking**: Live monitoring of Temperature, Humidity, Soil pH, and NPK levels.
-*   **Market Intelligence**: Real-time commodity price tracking and weather forecasting.
-*   **Yield Forecasting**: Predictive analytics for future harvest cycles.
+*   **Market Intelligence**: Real-time commodity price tracking (Corn, Wheat, Rice) via Commodities-API.
+*   **Yield Forecasting**: Predictive analytics for future harvest cycles with dynamic bar charts.
 
-### 📜 **Multi-Language Industrial Reporting**
-Generate professional audit reports at the click of a button.
+### 📜 **Master Intelligence Transcript**
+Generate professional PDF audit dossiers at the click of a button.
 *   **6-Language Support**: English, Tamil, Hindi, Telugu, Urdu, and Malayalam.
 *   **Audit-Ready PDFs**: Comprehensive reports including diagnosis, telemetry, and treatment schedules.
 
@@ -40,13 +40,13 @@ Generate professional audit reports at the click of a button.
 
 ## 🛠️ Technology Stack
 
-*   **Frontend**: Streamlit (Elite Cyber-Industrial UI)
+*   **Frontend**: Streamlit (Elite Cyber-Industrial UI v28.0)
 *   **Backend**: FastAPI (High-performance asynchronous processing)
 *   **Core AI Engine**: 
-    *   **LLM**: Groq Llama-3.3 (70B) for specialized agricultural reasoning.
-    *   **Vision**: Qwen2.5-VL for botanical identification.
+    *   **LLM**: Groq Llama-3.3 (70B) & Llama-3.1 (8B) for specialized reasoning.
+    *   **Vision**: Qwen2.5-VL-7B-Instruct for botanical identification.
 *   **Data Sources**: OpenWeatherMap API, Commodities-API, ICAR Knowledge Hub.
-*   **PDF Engine**: Custom Report Engine via FPDF2.
+*   **Geospatial**: Folium & Nominatim for global mapping.
 
 ---
 
@@ -54,75 +54,49 @@ Generate professional audit reports at the click of a button.
 
 ```text
 ├── 📂 agriculture_ai
-│   ├── streamlit_app.py        # Main Dashboard (Frontend)
+│   ├── streamlit_app.py        # Master Dashboard (Frontend)
 │   ├── 📂 backend
 │   │   ├── main.py             # FastAPI Server Engine
-│   │   ├── disease_database.py # Knowledge Base
+│   │   ├── logic.py            # AI & Data Logic
+│   │   ├── disease_database.py # ICAR Knowledge Base
 │   │   ├── report_engine.py    # PDF Generation Logic
-│   │   └── .env                # (Excluded) API Keys
+│   │   └── .env.template       # Environment Configuration
 │   ├── 📂 frontend
 │   │   └── 📂 src/index.css    # Custom Styling
 │   ├── requirements.txt
-│   └── .gitignore
+│   └── CHANGELOG.md            # Version Evolution
 ```
 
 ---
 
-## ⚙️ Installation & Setup
+## ⚙️ Deployment & Setup
 
 ### 1. Prerequisites
-* Python 3.9 or higher
-* Git
+* Python 3.9+
+* API Keys for Groq, HuggingFace, OpenWeatherMap, and Commodities-API.
 
-### 2. Clone and Install
+### 2. Quick Launch
 ```bash
+# Clone
 git clone https://github.com/mohammadthaheer2005/agrivision-ai-platform.git
 cd agrivision-ai-platform
+
+# Install
 pip install -r requirements.txt
-```
 
-### 3. Environment Configuration
-Create a `.env` file in the `backend/` directory:
-```env
-GROQ_API_KEY=your_key_here
-HUGGING_FACE_API_KEY=your_key_here
-OPENWEATHER_API_KEY=your_key_here
-COMMODITIES_API_KEY=your_key_here
-```
-
-### 4. Launching the Platform
-
-**Start the Backend Server (Port 8002):**
-```bash
-cd backend
-python main.py
-```
-
-**Start the Frontend Dashboard:**
-```bash
-# From the root directory
-streamlit run streamlit_app.py
+# Configure .env in backend/
+# LAUNCH EVERYTHING
+UNIFIED_LAUNCH.bat
 ```
 
 ---
 
-## 🛡️ Security & Privacy
-*   **Data Protection**: All API keys are managed via environment variables and excluded from version control.
-*   **Field Data**: Telemetry data is processed locally and formatted for professional auditing without external data leakage.
-
----
-
-## 🤝 Contribution
-AgriVision AI is built for the community. If you have suggestions for new disease models or regional data integrations:
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## 🛡️ Identity & Security
+*   **Lead Architect**: **Shaik Mohammad Thaheer** (AI/ML Enthusiast, SRM Institute).
+*   **Certification**: Core intelligence certified by ICAR standards.
+*   **Data Protection**: All API keys are managed via environment variables.
 
 ---
 
 ## 📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-*Developed by **Mohammad Thaheer** - Empowering Agriculture through AI.*
+Licensed under the MIT License - Developed by **Mohammad Thaheer** - *Empowering Agriculture through AI.*
