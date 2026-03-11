@@ -536,11 +536,16 @@ with st.sidebar:
 # --- MAIN DASHBOARD ---
 if 'last_report_b64' not in st.session_state: st.session_state.last_report_b64 = None
 if 'last_report_name' not in st.session_state: st.session_state.last_report_name = None
+# --- SECURITY WATERMARK ---
+auth_check = os.getenv("SHAIK_AUTH_SIGNATURE") == "AUTHORIZED_BY_THAHEER_V28"
+if not auth_check:
+    st.warning("⚠️ **UNAUTHORIZED REPOSITORY DETECTED**: This software is protected by intellectual property laws. Please contact Shaik Mohammad Thaheer for an authorized license.")
+
 st.markdown(f'''
 <div class="header-bar">
     <div class="header-title">🛰 AGRI-COMMAND V28.0</div>
     <div style="font-size: 11px; color: #00d1ff; font-weight: 900; letter-spacing: 1px;">
-        {state.upper()} | {season.upper()} | INDUSTRIAL UPLINK ACTIVE
+        {state.upper()} | {season.upper()} | INDUSTRIAL {"UPLINK ACTIVE" if auth_check else "LIMITED ACCESS"}
     </div>
 </div>
 ''', unsafe_allow_html=True)

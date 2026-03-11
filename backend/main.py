@@ -28,6 +28,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# --- SECURITY & IDENTITY SAFEGUARDS ---
+def verify_authorized():
+    """Nuclear Soft-Lock: Ensures the app runs only in authorized environments"""
+    auth_key = os.getenv("SHAIK_AUTH_SIGNATURE")
+    if auth_key != "AUTHORIZED_BY_THAHEER_V28":
+        # We don't crash, we just degrade the experience
+        return False
+    return True
+
 # --- STATIC FILES (REPORT SERVING) ---
 REPORTS_DIR = os.path.join(os.path.dirname(__file__), "reports")
 if not os.path.exists(REPORTS_DIR):
@@ -212,7 +221,14 @@ def get_official_resource(query):
 # --- ENDPOINTS ---
 @app.get("/api/health")
 async def health_check():
-    return {"status": "operational", "version": "28.0", "real_data": True}
+    auth = "AUTHORIZED" if verify_authorized() else "UNAUTHORIZED_COPY_DETECTED"
+    return {
+        "status": "operational", 
+        "version": "28.0", 
+        "license": "Proprietary - All Rights Reserved",
+        "architect": "Shaik Mohammad Thaheer",
+        "security_status": auth
+    }
 
 @app.get("/api/live-data")
 async def get_live_data():

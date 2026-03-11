@@ -98,5 +98,9 @@ UNIFIED_LAUNCH.bat
 
 ---
 
-## 📄 License
-Licensed under the MIT License - Developed by **Mohammad Thaheer** - *Empowering Agriculture through AI.*
+## 📄 License & Intellectual Property
+**Proprietary Software - All Rights Reserved.**
+
+This software is the intellectual property of **Shaik Mohammad Thaheer**. Unauthorized copying, distribution, or modification of this project via any medium is strictly prohibited. For inquiries regarding licensing or collaboration, contact the Lead Architect.
+
+*Developed by Mohammad Thaheer - Empowering Agriculture through AI.*
